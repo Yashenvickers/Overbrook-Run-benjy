@@ -3,9 +3,19 @@ from pydantic import BaseModel, Field
 from typing import List, Optional
 from datetime import datetime, timedelta
 import uuid
-from motor.motor_asyncio import AsyncIOMotorDatabase
-from ..server import db
+from motor.motor_asyncio import AsyncIOMotorDatabase, AsyncIOMotorClient
+import os
+from dotenv import load_dotenv
+from pathlib import Path
 import logging
+
+# Load environment and setup database connection
+ROOT_DIR = Path(__file__).parent
+load_dotenv(ROOT_DIR / '.env')
+
+mongo_url = os.environ['MONGO_URL']
+client = AsyncIOMotorClient(mongo_url)
+db = client[os.environ['DB_NAME']]
 
 logger = logging.getLogger(__name__)
 
