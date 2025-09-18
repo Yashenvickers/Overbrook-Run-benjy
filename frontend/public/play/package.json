@@ -1,0 +1,42 @@
+{
+  "name": "56ers-overbrook-run",
+  "version": "1.0.0",
+  "description": "A mobile-friendly browser game set in West Philadelphia",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python -m http.server 8080",
+    "serve": "npx serve .",
+    "build": "node build.js",
+    "deploy": "npm run build && npm run zip",
+    "zip": "zip -r overbrook-run-v1.0.0.zip . -x 'node_modules/*' '*.log' '.git/*'",
+    "test": "playwright test",
+    "optimize": "node optimize.js"
+  },
+  "keywords": [
+    "game",
+    "arcade",
+    "philadelphia",
+    "west-philly",
+    "browser-game",
+    "mobile-game",
+    "html5-canvas"
+  ],
+  "author": "Benjy 5600",
+  "license": "MIT",
+  "devDependencies": {
+    "terser": "^5.19.0",
+    "cssnano": "^6.0.0",
+    "html-minifier-terser": "^7.2.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/56ers-overbrook-run"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/56ers-overbrook-run/issues"
+  },
+  "homepage": "/play/"
+}
