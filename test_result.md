@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Test the backend game API endpoints for the 56ers Overbrook Run game"
+user_problem_statement: "Comprehensive frontend testing for '56ers — Overbrook Run' enhanced browser game - testing game loading, tutorial system, player controls (desktop/mobile), gameplay mechanics, enhanced features, audio/visual effects, HUD/UI, backend integration, mobile responsiveness, and cross-browser compatibility"
 
 backend:
   - task: "Game API Health Check"
