@@ -1,5 +1,4 @@
-// Import enhanced game engine
-import './enhanced-game.js';
+// Final Game - Enhanced Game with Backend Integration
 
 // Backend API Integration
 class GameAPI {
