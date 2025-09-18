@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>56ers — Overbrook Run | Benjy 5600 (West Philadelphia)</title>
+    <meta name="description" content="Run the 5600 blocks in a West Philly arcade rush. Collect Franklin keys, dodge hazards, and keep your combo alive.">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="/play/">
+    <meta property="og:title" content="56ers — Overbrook Run | Benjy 5600 (West Philadelphia)">
+    <meta property="og:description" content="Run the 5600 blocks in a West Philly arcade rush. Collect Franklin keys, dodge hazards, and keep your combo alive.">
+    <meta property="og:image" content="https://huggingface.co/spaces/Yasheen1/benjywebsite/resolve/main/images/SnapInsta.to_240715213_380935960163922_7580909807701216629_n.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="/play/">
+    <meta property="twitter:title" content="56ers — Overbrook Run | Benjy 5600 (West Philadelphia)">
+    <meta property="twitter:description" content="Run the 5600 blocks in a West Philly arcade rush. Collect Franklin keys, dodge hazards, and keep your combo alive.">
+    <meta property="twitter:image" content="https://huggingface.co/spaces/Yasheen1/benjywebsite/resolve/main/images/SnapInsta.to_240715213_380935960163922_7580909807701216629_n.jpg">
+
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --franklin: #0E3A5B;
+            --money: #0B8A53;
+            --amber: #FFB000;
+            --ink: #0A0A0A;
+            --cream: #F5F1E8;
+            --copper: #B87333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--ink) 0%, #1a1a1a 100%);
+            color: var(--cream);
+            overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        .game-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-backdrop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://huggingface.co/spaces/Yasheen1/benjywebsite/resolve/main/images/SnapInsta.to_240715213_380935960163922_7580909807701216629_n.jpg');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        .game-header {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            z-index: 100;
+        }
+
+        .game-title {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 800;
+            color: var(--amber);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            margin-bottom: 5px;
+        }
+
+        .game-subtitle {
+            font-size: clamp(0.8rem, 2vw, 1rem);
+            color: var(--cream);
+            font-weight: 400;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+        }
+
+        #gameCanvas {
+            border: 2px solid var(--franklin);
+            border-radius: 8px;
+            background: #000;
+            max-width: 100vw;
+            max-height: 60vh;
+            box-shadow: 0 8px 32px rgba(14, 58, 91, 0.3);
+        }
+
+        .hud {
+            position: absolute;
+            top: 80px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            z-index: 50;
+            pointer-events: none;
+        }
+
+        .hud-left, .hud-right {
+            display: flex;
+            gap: 20px;
+        }
+
+        .hud-item {
+            background: rgba(14, 58, 91, 0.8);
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid var(--franklin);
+            font-size: 14px;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .combo-meter {
+            background: rgba(11, 138, 83, 0.8);
+            border-color: var(--money);
+        }
+
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .mobile-controls {
+            display: none;
+            position: absolute;
+            bottom: 30px;
+            left: 20px;
+            right: 20px;
+            justify-content: space-between;
+            align-items: end;
+            z-index: 100;
+        }
+
+        .virtual-joystick {
+            width: 80px;
+            height: 80px;
+            border: 3px solid var(--franklin);
+            border-radius: 50%;
+            background: rgba(14, 58, 91, 0.3);
+            position: relative;
+            cursor: pointer;
+        }
+
+        .joystick-knob {
+            width: 30px;
+            height: 30px;
+            background: var(--amber);
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.1s ease;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .action-btn {
+            width: 60px;
+            height: 60px;
+            border: 3px solid var(--money);
+            border-radius: 50%;
+            background: rgba(11, 138, 83, 0.3);
+            color: var(--cream);
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .action-btn:active {
+            background: rgba(11, 138, 83, 0.6);
+            transform: scale(0.95);
+        }
+
+        .control-btn {
+            background: rgba(14, 58, 91, 0.8);
+            border: 2px solid var(--franklin);
+            color: var(--cream);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .control-btn:hover {
+            background: var(--franklin);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(14, 58, 91, 0.4);
+        }
+
+        .social-links {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .social-btn {
+            background: rgba(183, 115, 51, 0.8);
+            border: 2px solid var(--copper);
+            color: var(--cream);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-family: inherit;
+        }
+
+        .social-btn:hover {
+            background: var(--copper);
+            transform: translateY(-2px);
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 10, 10, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+        }
+
+        .overlay-content {
+            background: linear-gradient(135deg, var(--franklin) 0%, #1a4d6b 100%);
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            max-width: 400px;
+            border: 2px solid var(--amber);
+        }
+
+        .overlay h2 {
+            color: var(--amber);
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .overlay p {
+            color: var(--cream);
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .overlay-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                display: none;
+            }
+            
+            .mobile-controls {
+                display: flex;
+            }
+
+            .social-links {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                bottom: auto;
+                flex-direction: column;
+            }
+
+            .hud {
+                top: 120px;
+            }
+
+            #gameCanvas {
+                max-height: 50vh;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-header {
+                top: 10px;
+            }
+            
+            .hud {
+                top: 100px;
+                left: 10px;
+                right: 10px;
+            }
+            
+            .hud-item {
+                padding: 6px 12px;
+                font-size: 12px;
+                min-width: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="hero-backdrop"></div>
+        
+        <div class="game-header">
+            <h1 class="game-title">56ers — Overbrook Run</h1>
+            <p class="game-subtitle">West Philadelphia • 5600 Block</p>
+        </div>
+
+        <div class="hud">
+            <div class="hud-left">
+                <div class="hud-item">Score: <span id="score">0</span></div>
+                <div class="hud-item">Time: <span id="time">0:00</span></div>
+                <div class="hud-item combo-meter">Combo: <span id="combo">0</span></div>
+            </div>
+            <div class="hud-right">
+                <div class="hud-item">Lives: <span id="lives">3</span></div>
+                <div class="hud-item">Power: <span id="powerup">None</span></div>
+            </div>
+        </div>
+
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+        <div class="controls">
+            <button class="control-btn" id="startBtn">Start Game</button>
+            <button class="control-btn" id="pauseBtn" style="display: none;">Pause</button>
+            <button class="control-btn" id="muteBtn">🔊 Audio</button>
+        </div>
+
+        <div class="mobile-controls">
+            <div class="virtual-joystick" id="joystick">
+                <div class="joystick-knob" id="joystick-knob"></div>
+            </div>
+            <div class="action-buttons">
+                <button class="action-btn" id="shootBtn">SHOOT</button>
+                <button class="action-btn" id="dashBtn">DASH</button>
+            </div>
+        </div>
+
+        <div class="social-links">
+            <a href="#" class="social-btn" id="spotifyBtn" target="_blank">🎵 Spotify</a>
+            <a href="#" class="social-btn" id="youtubeBtn" target="_blank">📺 YouTube</a>
+            <button class="social-btn" id="shareBtn">📤 Share</button>
+        </div>
+
+        <!-- Tutorial Overlay -->
+        <div class="overlay" id="tutorialOverlay">
+            <div class="overlay-content">
+                <h2>How to Play</h2>
+                <p><strong>Desktop:</strong> WASD to move, Mouse to aim, Click to shoot, Space to dash</p>
+                <p><strong>Mobile:</strong> Left stick to move, Shoot & Dash buttons</p>
+                <p>Collect Franklin keys, avoid ops, build combos!</p>
+                <div class="overlay-buttons">
+                    <button class="control-btn" id="skipTutorial">Got it!</button>
+                    <label style="color: var(--cream); margin-left: 10px;">
+                        <input type="checkbox" id="dontShowAgain"> Don't show again
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pause Menu -->
+        <div class="overlay" id="pauseOverlay">
+            <div class="overlay-content">
+                <h2>Game Paused</h2>
+                <div class="overlay-buttons">
+                    <button class="control-btn" id="resumeBtn">Resume</button>
+                    <button class="control-btn" id="restartBtn">Restart</button>
+                    <button class="control-btn" id="controlsBtn">Controls</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Over -->
+        <div class="overlay" id="gameOverOverlay">
+            <div class="overlay-content">
+                <h2>Game Over</h2>
+                <p>Final Score: <span id="finalScore">0</span></p>
+                <p>Best Score: <span id="bestScore">0</span></p>
+                <div class="overlay-buttons">
+                    <button class="control-btn" id="playAgainBtn">Play Again</button>
+                    <button class="control-btn" id="shareScoreBtn">Share Score</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="./game.js"></script>
+</body>
+</html>
