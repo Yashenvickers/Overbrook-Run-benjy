@@ -135,7 +135,7 @@ async def get_leaderboard(
                 score=score["score"],
                 time_survived=score["time_survived"],
                 created_at=score["created_at"],
-                is_current_player=(session_id and score["session_id"] == session_id)
+                is_current_player=bool(session_id and score["session_id"] == session_id)
             )
             leaderboard.append(entry)
         
