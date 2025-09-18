@@ -405,7 +405,16 @@ metadata:
 
 test_plan:
   current_focus:
-    - "All backend game API endpoints tested and verified"
+    - "Game Loading & Initialization"
+    - "Tutorial System"
+    - "Game Start/Stop Controls"
+    - "Player Controls - Desktop"
+    - "Player Controls - Mobile"
+    - "Gameplay Mechanics"
+    - "HUD & UI Elements"
+    - "Backend Integration"
+    - "Mobile Responsiveness"
+    - "Game Over Flow"
   stuck_tasks: []
   test_all: true
   test_priority: "high_first"
