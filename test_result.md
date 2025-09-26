@@ -107,35 +107,41 @@ user_problem_statement: "Comprehensive frontend testing for '56ers — Overbrook
 backend:
   - task: "Game API Health Check"
     implemented: true
-    working: true
+    working: false
     file: "/app/backend/game_api.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
         - working: true
           agent: "testing"
           comment: "Health check endpoint working correctly. Returns status 'healthy' with timestamp and service name. Database connection verified."
+        - working: false
+          agent: "main"
+          comment: "Automated backend test suite (python backend_test.py) failed: connection refused to http://localhost:8001/api/game/health because the backend service was not running in the local environment."
 
   - task: "Score Submission API"
     implemented: true
-    working: true
+    working: false
     file: "/app/backend/game_api.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
         - working: true
           agent: "testing"
           comment: "Score submission working correctly. Successfully accepts player data including score, time_survived, enemies_defeated, pickups_collected, combo_max, wave_reached, powerups_used, difficulty, and session_id. Data persists to MongoDB."
+        - working: false
+          agent: "main"
+          comment: "Automated backend test suite could not reach http://localhost:8001/api/game/scores (connection refused). Backend API must be running to validate score submission."
 
   - task: "Leaderboard API"
     implemented: true
-    working: true
+    working: false
     file: "/app/backend/game_api.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
         - working: false
           agent: "testing"
@@ -143,54 +149,69 @@ backend:
         - working: true
           agent: "testing"
           comment: "Fixed boolean validation issue. Leaderboard now works correctly with ranking, current player highlighting, and timeframe filtering (daily, weekly, monthly). Session-based player highlighting functional."
+        - working: false
+          agent: "main"
+          comment: "Latest automated run received connection refused errors from http://localhost:8001/api/game/leaderboard because the backend API server was not started."
 
   - task: "Game Statistics API"
     implemented: true
-    working: true
+    working: false
     file: "/app/backend/game_api.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
         - working: true
           agent: "testing"
           comment: "Game statistics working correctly. Returns total_games, total_players, average_score, average_time, top_score, total_enemies_defeated, total_pickups, and most_used_powerups. Aggregation pipeline functioning properly."
+        - working: false
+          agent: "main"
+          comment: "Unable to verify statistics endpoint because http://localhost:8001/api/game/stats was unreachable during automated testing (backend server offline)."
 
   - task: "Analytics Event Tracking"
     implemented: true
-    working: true
+    working: false
     file: "/app/backend/game_api.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
         - working: true
           agent: "testing"
           comment: "Analytics tracking working correctly. Successfully tracks game_start, run_end, share_click, and cta_click events with session tracking and custom data fields. Events persist to MongoDB."
+        - working: false
+          agent: "main"
+          comment: "Connection to http://localhost:8001/api/game/analytics was refused during automated regression run; backend analytics endpoint needs a running server for verification."
 
   - task: "Player Ranking API"
     implemented: true
-    working: true
+    working: false
     file: "/app/backend/game_api.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
         - working: true
           agent: "testing"
           comment: "Player ranking working correctly. Returns player rank, best_score, total_players, and percentile calculation. Handles non-existent players gracefully."
+        - working: false
+          agent: "main"
+          comment: "Automated test call to http://localhost:8001/api/game/player/{session_id}/rank failed with connection refused because backend API was offline."
 
   - task: "Player Scores Retrieval"
     implemented: true
-    working: true
+    working: false
     file: "/app/backend/game_api.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
         - working: true
           agent: "testing"
           comment: "Player scores retrieval working correctly. Returns all scores for a specific session_id sorted by creation date. Handles empty results gracefully."
+        - working: false
+          agent: "main"
+          comment: "Could not verify player scores because http://localhost:8001/api/game/player/{session_id}/scores returned connection refused when backend was offline during tests."
 
   - task: "Error Handling and Validation"
     implemented: true
@@ -400,7 +421,7 @@ frontend:
 metadata:
   created_by: "testing_agent"
   version: "1.0"
-  test_sequence: 1
+  test_sequence: 2
   run_ui: false
 
 test_plan:
@@ -415,7 +436,8 @@ test_plan:
     - "Backend Integration"
     - "Mobile Responsiveness"
     - "Game Over Flow"
-  stuck_tasks: []
+  stuck_tasks:
+    - "Backend API availability (server not running during automated tests)"
   test_all: true
   test_priority: "high_first"
 
@@ -424,3 +446,5 @@ agent_communication:
       message: "Completed comprehensive testing of all backend game API endpoints for 56ers Overbrook Run game. Found and fixed one minor boolean validation issue in leaderboard endpoint. All 8 test categories passed successfully. Backend API is fully functional with proper MongoDB data persistence, session tracking, error handling, and response formatting. Fixed import issue in game_api.py to enable proper database connection."
     - agent: "testing"
       message: "Starting comprehensive frontend testing for 56ers Overbrook Run enhanced browser game. Updated test_result.md with 16 frontend testing tasks covering game loading, controls, mechanics, enhanced features, UI/UX, backend integration, and cross-browser compatibility. Will test systematically starting with high-priority core functionality."
+    - agent: "main"
+      message: "Ran python backend_test.py; all seven backend API checks failed with connection refused errors because no server was listening on http://localhost:8001. Updated backend task statuses and flagged backend availability as a stuck item."
