@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+<title>OVERBROOK RUN — Starring Benji 5600</title>
+<meta name="description" content="OVERBROOK RUN — a fictional first-person arcade shooter through a stylized Overbrook, Philadelphia. Starring Benji 5600." />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%230b1f14%22/><text x=%2250%22 y=%2266%22 font-size=%2255%22 text-anchor=%22middle%22 fill=%22%23c8ff5a%22 font-family=%22Arial Black%22>5</text></svg>" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- ======================= LOADING SCREEN ======================= -->
+<div id="screen-loading" class="screen active">
+  <div class="loading-wrap">
+    <div class="logo-mark">5600</div>
+    <h1 class="game-title">OVERBROOK <span>RUN</span></h1>
+    <div class="loading-bar"><div id="loading-fill" class="loading-fill"></div></div>
+    <p id="loading-text" class="loading-text">LOADING THE BLOCK...</p>
+  </div>
+</div>
+
+<!-- ======================= TITLE SCREEN ======================= -->
+<div id="screen-title" class="screen">
+  <div class="skyline-bg" aria-hidden="true"></div>
+  <div class="rain-overlay" aria-hidden="true"></div>
+  <div class="title-content">
+    <div class="benji-portrait" aria-hidden="true">
+      <div class="benji-silhouette"></div>
+    </div>
+    <div class="title-block">
+      <div class="starring-tag">STARRING BENJI 5600</div>
+      <h1 class="game-title huge">OVERBROOK <span>RUN</span></h1>
+      <p class="tagline">MAKE IT THROUGH THE BLOCK. PROTECT THE JERSEY. GET HOME.</p>
+      <nav class="menu-list">
+        <button class="menu-btn primary" data-action="play">PLAY</button>
+        <button class="menu-btn" data-action="howto">HOW TO PLAY</button>
+        <button class="menu-btn" data-action="settings">SETTINGS</button>
+        <button class="menu-btn" data-action="leaderboard">LEADERBOARD</button>
+        <button class="menu-btn" data-action="credits">CREDITS</button>
+      </nav>
+      <div class="highscore-strip">BEST SCORE: <span id="title-best-score">0</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================= HOW TO PLAY ======================= -->
+<div id="screen-howto" class="screen">
+  <div class="panel">
+    <h2 class="panel-title">HOW TO PLAY</h2>
+    <div class="howto-grid">
+      <div class="howto-col">
+        <h3>DESKTOP</h3>
+        <ul class="key-list">
+          <li><span class="key">W A S D</span> Move</li>
+          <li><span class="key">MOUSE</span> Look Around</li>
+          <li><span class="key">LEFT CLICK</span> Fire</li>
+          <li><span class="key">RIGHT CLICK</span> Aim</li>
+          <li><span class="key">SHIFT</span> Sprint</li>
+          <li><span class="key">SPACE</span> Jump</li>
+          <li><span class="key">C / CTRL</span> Crouch</li>
+          <li><span class="key">R</span> Reload</li>
+          <li><span class="key">E</span> Interact</li>
+          <li><span class="key">Q</span> Switch Weapon</li>
+          <li><span class="key">F</span> Activate 5600 Mode</li>
+          <li><span class="key">ESC</span> Pause</li>
+        </ul>
+      </div>
+      <div class="howto-col">
+        <h3>MOBILE</h3>
+        <ul class="key-list">
+          <li><span class="key">LEFT STICK</span> Move</li>
+          <li><span class="key">RIGHT SIDE</span> Swipe to Look</li>
+          <li><span class="key">FIRE</span> Shoot</li>
+          <li><span class="key">AIM</span> Aim Down</li>
+          <li><span class="key">JUMP</span> Jump</li>
+          <li><span class="key">SPRINT</span> Run</li>
+          <li><span class="key">RELOAD</span> Reload</li>
+          <li><span class="key">SWITCH</span> Change Weapon</li>
+          <li><span class="key">5600</span> Activate Momentum Mode</li>
+        </ul>
+      </div>
+    </div>
+    <div class="howto-tip">Fill the <b>PHILLY MOMENTUM</b> meter by moving, landing hits, and clearing checkpoints fast. Full meter = <b>5600 MODE</b>: faster, harder-hitting, quicker reloads.</div>
+    <button class="menu-btn primary" data-action="back">BACK</button>
+  </div>
+</div>
+
+<!-- ======================= SETTINGS ======================= -->
+<div id="screen-settings" class="screen">
+  <div class="panel">
+    <h2 class="panel-title">SETTINGS</h2>
+    <div class="settings-grid">
+      <label class="setting-row">
+        <span>Music Volume</span>
+        <input type="range" id="set-music" min="0" max="100" value="55" />
+      </label>
+      <label class="setting-row">
+        <span>Sound Effects</span>
+        <input type="range" id="set-sfx" min="0" max="100" value="75" />
+      </label>
+      <label class="setting-row">
+        <span>Mouse Sensitivity</span>
+        <input type="range" id="set-mouse" min="1" max="100" value="50" />
+      </label>
+      <label class="setting-row">
+        <span>Mobile Sensitivity</span>
+        <input type="range" id="set-touch" min="1" max="100" value="50" />
+      </label>
+      <label class="setting-row">
+        <span>Graphics Quality</span>
+        <select id="set-quality">
+          <option value="low">Low</option>
+          <option value="medium" selected>Medium</option>
+          <option value="high">High</option>
+        </select>
+      </label>
+      <label class="setting-row">
+        <span>Fullscreen</span>
+        <button id="set-fullscreen" class="toggle-btn">TOGGLE</button>
+      </label>
+    </div>
+    <button class="menu-btn primary" data-action="back">BACK</button>
+  </div>
+</div>
+
+<!-- ======================= LEADERBOARD ======================= -->
+<div id="screen-leaderboard" class="screen">
+  <div class="panel">
+    <h2 class="panel-title">LEADERBOARD</h2>
+    <p class="panel-sub">LOCAL BEST RUNS — connect <code>js/core/Leaderboard.js</code> to a backend for online rankings.</p>
+    <ol id="leaderboard-list" class="leaderboard-list"></ol>
+    <button class="menu-btn primary" data-action="back">BACK</button>
+  </div>
+</div>
+
+<!-- ======================= CREDITS ======================= -->
+<div id="screen-credits" class="screen">
+  <div class="panel">
+    <h2 class="panel-title">CREDITS</h2>
+    <div class="credits-text">
+      <p><b>OVERBROOK RUN</b> is a work of fiction. All characters, opponents, businesses, and locations are entirely fictional and any resemblance to real people, gangs, or organizations is unintentional.</p>
+      <p>Starring <b>BENJI 5600</b></p>
+      <p>Setting inspired by the visual character of West Philadelphia / Overbrook — fictionalized, no real addresses or private property depicted.</p>
+      <p>Built with Three.js (WebGL). Original procedural audio &amp; music. No copyrighted logos, teams, or recordings used.</p>
+      <p class="credits-small">Game design, code, and original assets created for this project.</p>
+    </div>
+    <button class="menu-btn primary" data-action="back">BACK</button>
+  </div>
+</div>
+
+<!-- ======================= STORY INTRO ======================= -->
+<div id="screen-story" class="screen">
+  <div class="story-wrap">
+    <p id="story-line" class="story-line"></p>
+    <div class="mission-block">
+      <p>MISSION: <span>MAKE IT THROUGH OVERBROOK</span></p>
+      <p>PLAYER: <span>BENJI 5600</span></p>
+      <p>DESTINATION: <span>THE 5600 SAFE HOUSE</span></p>
+    </div>
+    <button id="story-skip" class="menu-btn primary">BEGIN RUN</button>
+  </div>
+</div>
+
+<!-- ======================= GAME CANVAS + HUD ======================= -->
+<div id="screen-game" class="screen">
+  <canvas id="game-canvas"></canvas>
+
+  <!-- HUD -->
+  <div id="hud" class="hud">
+    <div class="hud-top-left">
+      <div class="stat-bar health"><div class="stat-label">HP</div><div class="stat-track"><div id="hud-health" class="stat-fill"></div></div></div>
+      <div class="stat-bar armor"><div class="stat-label">ARM</div><div class="stat-track"><div id="hud-armor" class="stat-fill"></div></div></div>
+      <div class="stat-bar stamina"><div class="stat-label">STA</div><div class="stat-track"><div id="hud-stamina" class="stat-fill"></div></div></div>
+    </div>
+
+    <div class="hud-top-right">
+      <div class="timer" id="hud-timer">00:00</div>
+      <div class="score-box">SCORE <span id="hud-score">0</span></div>
+      <div class="combo-box" id="hud-combo-box">x<span id="hud-combo">1</span> COMBO</div>
+    </div>
+
+    <div class="hud-top-center">
+      <div id="hud-section-name" class="section-name">OVERBROOK AVENUE</div>
+      <div id="hud-checkpoint-msg" class="checkpoint-msg"></div>
+    </div>
+
+    <div class="hud-crosshair" id="hud-crosshair">
+      <div class="ch-dot"></div>
+      <div class="ch-line ch-top"></div><div class="ch-line ch-bottom"></div>
+      <div class="ch-line ch-left"></div><div class="ch-line ch-right"></div>
+    </div>
+
+    <div id="hitmarker" class="hitmarker"></div>
+    <div id="damage-flash" class="damage-flash"></div>
+    <div id="damage-indicators" class="damage-indicators"></div>
+
+    <div class="hud-objective" id="hud-objective">
+      <div id="objective-arrow" class="objective-arrow">▲</div>
+      <div id="objective-dist" class="objective-dist">--</div>
+    </div>
+
+    <div class="hud-bottom-left">
+      <div class="weapon-box">
+        <div id="hud-weapon-name" class="weapon-name">5600 COMPACT BLASTER</div>
+        <div class="ammo-row"><span id="hud-ammo">18</span>/<span id="hud-ammo-reserve">90</span></div>
+      </div>
+    </div>
+
+    <div class="hud-bottom-right">
+      <div class="momentum-box">
+        <div class="momentum-label">PHILLY MOMENTUM</div>
+        <div class="momentum-track"><div id="hud-momentum" class="momentum-fill"></div></div>
+        <div id="momentum-ready" class="momentum-ready">5600 MODE READY — PRESS F</div>
+      </div>
+    </div>
+
+    <div id="mode-5600-banner" class="mode-5600-banner">5600 MODE!</div>
+    <div id="chant-banner" class="chant-banner">FIVE-SIX! FIVE-SIX!</div>
+
+    <button id="btn-pause" class="icon-btn pause-btn" aria-label="Pause">II</button>
+  </div>
+
+  <!-- Mobile controls -->
+  <div id="mobile-controls" class="mobile-controls">
+    <div id="touch-move-zone" class="touch-move-zone">
+      <div id="touch-joystick-base" class="joystick-base">
+        <div id="touch-joystick-knob" class="joystick-knob"></div>
+      </div>
+    </div>
+    <div id="touch-look-zone" class="touch-look-zone"></div>
+
+    <div class="mobile-buttons-left">
+      <button id="btn-jump" class="mbtn">JUMP</button>
+      <button id="btn-sprint" class="mbtn">SPRINT</button>
+      <button id="btn-crouch" class="mbtn">CROUCH</button>
+    </div>
+    <div class="mobile-buttons-right">
+      <button id="btn-fire" class="mbtn mbtn-fire">FIRE</button>
+      <button id="btn-aim" class="mbtn">AIM</button>
+      <button id="btn-reload" class="mbtn">RELOAD</button>
+      <button id="btn-switch" class="mbtn">SWITCH</button>
+      <button id="btn-5600" class="mbtn mbtn-5600">5600</button>
+    </div>
+  </div>
+</div>
+
+<!-- ======================= PAUSE MENU ======================= -->
+<div id="screen-pause" class="screen overlay-screen">
+  <div class="panel">
+    <h2 class="panel-title">PAUSED</h2>
+    <nav class="menu-list">
+      <button class="menu-btn primary" data-action="resume">RESUME</button>
+      <button class="menu-btn" data-action="settings-ingame">SETTINGS</button>
+      <button class="menu-btn" data-action="restart">RESTART</button>
+      <button class="menu-btn" data-action="quit">QUIT TO MENU</button>
+    </nav>
+  </div>
+</div>
+
+<!-- ======================= GAME OVER ======================= -->
+<div id="screen-gameover" class="screen">
+  <div class="end-wrap gameover">
+    <div class="benji-portrait down" aria-hidden="true"><div class="benji-silhouette"></div></div>
+    <h2 class="end-title">BENJI WENT DOWN</h2>
+    <p class="end-sub">THE BLOCK GOT THE BEST OF HIM THIS TIME</p>
+    <div class="stat-grid">
+      <div class="stat-item"><span class="stat-item-label">DISTANCE</span><span id="go-distance" class="stat-item-value">0m</span></div>
+      <div class="stat-item"><span class="stat-item-label">DEFEATED</span><span id="go-defeated" class="stat-item-value">0</span></div>
+      <div class="stat-item"><span class="stat-item-label">ACCURACY</span><span id="go-accuracy" class="stat-item-value">0%</span></div>
+      <div class="stat-item"><span class="stat-item-label">SCORE</span><span id="go-score" class="stat-item-value">0</span></div>
+    </div>
+    <nav class="menu-list">
+      <button class="menu-btn primary" data-action="retry">RETRY</button>
+      <button class="menu-btn" data-action="quit">RETURN TO MENU</button>
+    </nav>
+  </div>
+</div>
+
+<!-- ======================= VICTORY ======================= -->
+<div id="screen-victory" class="screen">
+  <div class="end-wrap victory">
+    <div class="benji-portrait win" aria-hidden="true"><div class="benji-silhouette"></div></div>
+    <h2 class="end-title victory-title">BENJI MADE IT THROUGH OVERBROOK</h2>
+    <p class="end-sub">THE 5600 SAFE HOUSE — SECURED</p>
+    <div class="stat-grid">
+      <div class="stat-item"><span class="stat-item-label">TIME</span><span id="vic-time" class="stat-item-value">00:00</span></div>
+      <div class="stat-item"><span class="stat-item-label">SCORE</span><span id="vic-score" class="stat-item-value">0</span></div>
+      <div class="stat-item"><span class="stat-item-label">ACCURACY</span><span id="vic-accuracy" class="stat-item-value">0%</span></div>
+      <div class="stat-item"><span class="stat-item-label">BEST COMBO</span><span id="vic-combo" class="stat-item-value">x0</span></div>
+    </div>
+    <div class="submit-row">
+      <input id="vic-name" class="name-input" maxlength="12" placeholder="ENTER YOUR TAG" />
+      <button id="vic-submit" class="menu-btn primary">SUBMIT SCORE</button>
+    </div>
+    <nav class="menu-list">
+      <button class="menu-btn" data-action="retry">PLAY AGAIN</button>
+      <button class="menu-btn" data-action="quit">RETURN TO MENU</button>
+    </nav>
+  </div>
+</div>
+
+<!-- Orientation / pointer-lock prompts -->
+<div id="tap-to-play" class="tap-to-play hidden">
+  <p>TAP TO ENTER FIRST-PERSON VIEW</p>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "./js/vendor/three.module.js"
+  }
+}
+</script>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
