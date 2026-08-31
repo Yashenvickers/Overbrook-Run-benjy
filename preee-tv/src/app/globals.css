@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Base ──────────────────────────────────────────────────────────────── */
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  /* No smooth-scroll libraries; native only, and disabled for reduced motion. */
+  scroll-behavior: auto;
+}
+
+body {
+  @apply bg-ink text-paper antialiased;
+  /* Guard against accidental horizontal overflow from full-bleed sections.
+     `clip` (with `hidden` fallback) avoids creating a scroll container, so
+     position: sticky keeps working correctly. */
+  overflow-x: hidden;
+  overflow-x: clip;
+}
+
+::selection {
+  background: theme("colors.signal.DEFAULT");
+  color: theme("colors.signal.ink");
+}
+
+/* Visible focus everywhere, high contrast on dark ground. */
+:focus-visible {
+  outline: 2px solid theme("colors.signal.DEFAULT");
+  outline-offset: 2px;
+}
+
+/* ── Typography helpers ───────────────────────────────────────────────── */
+
+.headline {
+  @apply font-display uppercase leading-[0.95] tracking-tight;
+}
+
+.kicker {
+  @apply text-kicker font-sans font-bold uppercase text-signal;
+}
+
+/* Article prose on dark ground. */
+.prose-dark {
+  @apply text-[1.0625rem] leading-relaxed text-paper/90;
+}
+.prose-dark p {
+  @apply mb-6;
+}
+.prose-dark h2 {
+  @apply headline mt-10 mb-4 text-2xl text-paper;
+}
+.prose-dark a {
+  @apply text-signal underline decoration-signal/50 underline-offset-4 hover:decoration-signal;
+}
+.prose-dark ul {
+  @apply mb-6 list-disc pl-6;
+}
+.prose-dark ol {
+  @apply mb-6 list-decimal pl-6;
+}
+.prose-dark blockquote {
+  @apply my-8 border-l-4 border-signal pl-5 font-display text-xl uppercase leading-tight text-paper;
+}
+
+/* ── Motion ───────────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Horizontal rails: momentum scrolling, snap, hidden scrollbar affordance kept. */
+.rail {
+  @apply flex gap-4 overflow-x-auto pb-4;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
+.rail > * {
+  scroll-snap-align: start;
+}
