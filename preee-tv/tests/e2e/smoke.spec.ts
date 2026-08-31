@@ -49,7 +49,7 @@ test.describe("navigation", () => {
     await page.goto("/");
     await page.getByRole("navigation", { name: "Primary" }).getByRole("link", { name: "Music" }).click();
     await expect(page).toHaveURL(/\/music/);
-    await expect(page.getByRole("heading", { name: "Music" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Music", level: 1 })).toBeVisible();
   });
 
   test("mobile menu opens, closes, and navigates", async ({ page, isMobile }) => {

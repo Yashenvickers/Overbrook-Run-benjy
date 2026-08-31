@@ -79,7 +79,10 @@ export function Header() {
   }, [menuOpen, close]);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-ink-line bg-ink/95 backdrop-blur-sm">
+    // The translucent blur lives on a ::before layer: backdrop-filter on the
+    // header itself would make it the containing block for the fixed-position
+    // mobile menu, collapsing the menu to the header's height.
+    <header className="sticky top-0 z-50 border-b border-ink-line before:absolute before:inset-0 before:-z-10 before:bg-ink/95 before:backdrop-blur-sm">
       <div className="mx-auto flex h-16 w-full max-w-site items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <Link
           href="/"

@@ -14,7 +14,8 @@ export function BreakingBar({ item }: { item: BreakingItem }) {
   if (dismissed) return null;
 
   const inner = (
-    <span className="min-w-0 truncate">
+    // block-level so `truncate` (overflow:hidden) actually applies
+    <span className="block min-w-0 truncate">
       <span className="mr-2 inline-block h-2 w-2 animate-pulse rounded-full bg-live align-middle" aria-hidden />
       <span className="kicker mr-2 text-signal">Now</span>
       <span className="text-sm text-paper">{item.text}</span>

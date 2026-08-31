@@ -73,10 +73,12 @@ export function LeadForm({
     handleSubmit,
     formState: { errors, isSubmitting, submitCount },
   } = useForm<FormValues>({
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    resolver: zodResolver(SCHEMAS[type] as any) as never,
+    resolver: zodResolver(SCHEMAS[type] as never) as never,
     mode: "onTouched",
-    defaultValues: { type, agreeTerms: false },
+    // consentAt is part of the shared schema but not a rendered field; without
+    // a default the client-side resolver rejects every submit on it. The real
+    // timestamp is set in onSubmit.
+    defaultValues: { type, agreeTerms: false, consentAt: new Date().toISOString() },
   });
 
   // Fire *_start once, on first interaction with the submit-music flow.
