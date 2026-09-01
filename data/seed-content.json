@@ -1,0 +1,423 @@
+{
+  "categories": [
+    { "slug": "music", "title": "Music", "description": "New sounds, scene reports, and the records that matter — before everybody else catches up." },
+    { "slug": "culture", "title": "Culture", "description": "Style, film, internet moments, and the movements shaping how music lives in the world." },
+    { "slug": "business", "title": "The Business", "description": "Deals, streaming economics, touring math, and the money behind the music." },
+    { "slug": "interviews", "title": "Interviews", "description": "Long-form conversations with the artists, producers, and executives building what's next." },
+    { "slug": "performances", "title": "Performances", "description": "Live moments, session takes, and mic drops captured the Preee way." }
+  ],
+  "breaking": [
+    {
+      "id": "launch-now",
+      "text": "Preee TV is live — new episodes, artist spotlights, and the Culture Calendar are rolling out now.",
+      "href": "/watch",
+      "active": true
+    }
+  ],
+  "articles": [
+    {
+      "slug": "welcome-to-preee-tv",
+      "title": "You Don't Know About It Till We Tell You About It",
+      "dek": "Preee TV launches as a culture-first home for music discovery, real conversations, and the business behind the sound. Here's what we're building — and why.",
+      "category": "culture",
+      "author": { "slug": "preee-editorial", "name": "Preee Editorial", "role": "Editorial Team" },
+      "publishedAt": "2026-08-01T09:00:00-04:00",
+      "hero": { "src": "/seed/neon-16x9.jpg", "alt": "Abstract dark editorial graphic with signal-yellow starburst", "credit": "Preee TV", "rightsStatus": "generated" },
+      "featured": true,
+      "evergreen": true,
+      "tags": ["launch", "editorial"],
+      "body": [
+        { "type": "paragraph", "text": "Every era of music media gets the platform it deserves. Blogs had their moment. Radio still has its lane. But the artists defining this decade are breaking on their own terms — in group chats, on live streams, in 45-second clips shot in parking lots after the show. Preee TV exists to catch those moments early, put real context around them, and tell you why they matter before the algorithm decides for you." },
+        { "type": "pullQuote", "text": "You don't know about it till we tell you about it.", "attribution": "The Preee promise" },
+        { "type": "heading", "text": "What Preee TV covers" },
+        { "type": "paragraph", "text": "Music first — discovery, premieres, and scene reports from the ground. Culture always — the style, film, and internet moments that give the music its meaning. And the business, because artists deserve to understand the machine they're feeding: streaming splits, touring economics, brand deals, and who actually gets paid." },
+        { "type": "heading", "text": "How to plug in" },
+        { "type": "paragraph", "text": "Watch the interviews and performances on the Watch page. Track what's coming with the Culture Calendar. Artists can submit music directly — a real human listens. And the newsletter is the shortlist: what we found, why it matters, no filler." }
+      ]
+    },
+    {
+      "slug": "how-we-choose-what-we-cover",
+      "title": "How Preee Chooses What to Cover",
+      "dek": "No pay-for-play posturing, no chart-chasing. Our editorial standards, in plain language.",
+      "category": "culture",
+      "author": { "slug": "preee-editorial", "name": "Preee Editorial", "role": "Editorial Team" },
+      "publishedAt": "2026-08-03T10:00:00-04:00",
+      "hero": { "src": "/seed/grid-16x9.jpg", "alt": "Abstract grid pattern editorial graphic in monochrome", "credit": "Preee TV", "rightsStatus": "generated" },
+      "evergreen": true,
+      "tags": ["editorial", "standards"],
+      "body": [
+        { "type": "paragraph", "text": "Trust is the only currency a music platform actually owns. So here is the deal we make with you: coverage is never sold. When something on Preee TV is sponsored or part of a paid promotion, it says so — clearly, at the top, every time." },
+        { "type": "paragraph", "text": "We cover what moves us and what moves the culture, whether it has ten plays or ten million. Submissions get listened to by people, not scored by bots. And when we get something wrong, we correct it in public with a note on the story." },
+        { "type": "pullQuote", "text": "Coverage is never sold. Promotion is always labeled." },
+        { "type": "paragraph", "text": "That's the whole policy. It fits on a sticky note on purpose." }
+      ]
+    },
+    {
+      "slug": "the-anatomy-of-a-breakout-record",
+      "title": "The Anatomy of a Breakout Record in the Streaming Era",
+      "dek": "What actually happens between a song leaving a bedroom studio and living on a million playlists — a field guide.",
+      "category": "music",
+      "author": { "slug": "preee-editorial", "name": "Preee Editorial", "role": "Editorial Team" },
+      "publishedAt": "2026-08-05T09:00:00-04:00",
+      "hero": { "src": "/seed/wave-16x9.jpg", "alt": "Abstract waveform editorial graphic in deep blue", "credit": "Preee TV", "rightsStatus": "generated" },
+      "featured": true,
+      "evergreen": true,
+      "tags": ["streaming", "discovery"],
+      "body": [
+        { "type": "paragraph", "text": "Breakout records look like accidents from the outside. From the inside, they almost never are. There's a repeatable shape to how a song travels now: a spark on short-form video, a feedback loop in the comments, editorial playlist adds, then the slower, more durable climb into people's personal libraries — the metric that actually predicts a career." },
+        { "type": "heading", "text": "The spark" },
+        { "type": "paragraph", "text": "The first thousand true listeners rarely come from a playlist. They come from a moment: a clip with the right eight seconds, a co-sign in the right group chat, a live performance someone filmed from the crowd. The lesson for artists is uncomfortable but freeing — you can't manufacture the moment, but you can be relentlessly ready for it, with the record mixed, the profiles clean, and the story easy to retell." },
+        { "type": "heading", "text": "The climb" },
+        { "type": "paragraph", "text": "Saves and library adds beat raw streams. Repeat listeners beat viral spikes. A song that ten thousand people play fifty times builds more of a career than a song a million people play once. When we spotlight an artist on Preee TV, that's the pattern we're looking for — evidence of repeat pull, not just reach." },
+        { "type": "pullQuote", "text": "Repeat listeners beat viral spikes. Every time." }
+      ]
+    },
+    {
+      "slug": "streaming-royalties-explained",
+      "title": "Where the Money Goes: Streaming Royalties, Explained Like a Human",
+      "dek": "The per-stream number everyone quotes is a myth. Here's how the pool system actually pays artists — and where the leaks are.",
+      "category": "business",
+      "author": { "slug": "preee-editorial", "name": "Preee Editorial", "role": "Editorial Team" },
+      "publishedAt": "2026-08-07T09:00:00-04:00",
+      "hero": { "src": "/seed/signal-16x9.jpg", "alt": "Abstract bar-chart style editorial graphic in signal yellow", "credit": "Preee TV", "rightsStatus": "generated" },
+      "featured": true,
+      "evergreen": true,
+      "tags": ["streaming", "royalties", "money"],
+      "body": [
+        { "type": "paragraph", "text": "Ask five people what a stream pays and you'll get five confident, wrong answers. That's because most services don't pay per stream at all. They pool subscription and ad revenue, take their cut, and divide the artist share by each catalog's slice of total plays. Your song isn't earning a fixed rate — it's competing for a share of a moving pool." },
+        { "type": "heading", "text": "The chain of hands" },
+        { "type": "paragraph", "text": "Between the listener's subscription and the artist's bank account sit the service, the distributor, the label (if there is one), the publisher, and the collection societies handling the songwriting side. Every hand takes a percentage, and the songwriting money moves on a completely different — and slower — track than the recording money. Artists who write their own material are owed on both sides, and an alarming number never register to collect the second one." },
+        { "type": "paragraph", "text": "This is the kind of coverage The Business vertical exists for: not stock tickers, but the practical mechanics that decide whether the people making the music can keep making it." },
+        { "type": "pullQuote", "text": "The biggest leak in most artists' income isn't piracy. It's unregistered publishing." }
+      ]
+    },
+    {
+      "slug": "the-comeback-of-the-music-video",
+      "title": "The Music Video Didn't Die. It Moved.",
+      "dek": "Budgets shrank, screens shrank, and somehow the form got more interesting. On the new visual economy of music.",
+      "category": "culture",
+      "author": { "slug": "preee-editorial", "name": "Preee Editorial", "role": "Editorial Team" },
+      "publishedAt": "2026-08-10T09:00:00-04:00",
+      "hero": { "src": "/seed/stage-16x9.jpg", "alt": "Abstract stage-light triangle editorial graphic in blue tones", "credit": "Preee TV", "rightsStatus": "generated" },
+      "evergreen": true,
+      "tags": ["video", "visuals"],
+      "body": [
+        { "type": "paragraph", "text": "The six-figure music video didn't survive the streaming squeeze, but the music video itself is having its most inventive run in years. The form fragmented: vertical loops built for repeat viewing, single-take performance pieces, lyric videos that are really typography showcases, and fan-shot live footage that labels now license instead of takedown." },
+        { "type": "paragraph", "text": "What changed is the job description. A video no longer has to be the definitive statement of a song. It has to be a reason to watch the song again — and the artists winning right now treat every visual as another verse in a longer story." },
+        { "type": "pullQuote", "text": "A great video is no longer the statement. It's the reason to replay." },
+        { "type": "paragraph", "text": "Preee TV's Watch section is built for this era — performances and conversations shot to be rewatched, not just released." }
+      ]
+    },
+    {
+      "slug": "what-makes-a-great-music-interview",
+      "title": "What Makes a Music Interview Worth Your Time",
+      "dek": "Most artist interviews are press releases with chairs. Ours won't be. A short manifesto for the Preee TV interview.",
+      "category": "interviews",
+      "author": { "slug": "preee-editorial", "name": "Preee Editorial", "role": "Editorial Team" },
+      "publishedAt": "2026-08-12T09:00:00-04:00",
+      "hero": { "src": "/seed/mic-16x9.jpg", "alt": "Abstract microphone-inspired circular editorial graphic in green tones", "credit": "Preee TV", "rightsStatus": "generated" },
+      "evergreen": true,
+      "tags": ["interviews", "editorial"],
+      "body": [
+        { "type": "paragraph", "text": "You can tell within ninety seconds whether an interview was researched or scheduled. The scheduled kind runs on autopilot: how'd you get your name, describe your sound, what's next. The researched kind asks the question the artist has been waiting years for someone to notice." },
+        { "type": "paragraph", "text": "The Preee TV interview format is simple: we do the homework, we ask about the work, and we leave room for the answer to go somewhere neither side planned. The best moments in music television have always been unscripted — our job is to build a room where they can happen." },
+        { "type": "pullQuote", "text": "Ask the question they've been waiting years for someone to notice." },
+        { "type": "paragraph", "text": "Think you or your artist belongs in that chair? The Request an Interview page is open." }
+      ]
+    },
+    {
+      "slug": "live-music-is-the-last-scarcity",
+      "title": "Live Music Is the Last Scarcity",
+      "dek": "In a world of infinite streams, the room you had to be in is the only thing left that can't be copied.",
+      "category": "performances",
+      "author": { "slug": "preee-editorial", "name": "Preee Editorial", "role": "Editorial Team" },
+      "publishedAt": "2026-08-14T09:00:00-04:00",
+      "hero": { "src": "/seed/amp-16x9.jpg", "alt": "Abstract amplifier triangle editorial graphic in amber tones", "credit": "Preee TV", "rightsStatus": "generated" },
+      "evergreen": true,
+      "tags": ["live", "performance"],
+      "body": [
+        { "type": "paragraph", "text": "Recorded music became infinite and nearly free. Live music went the other way — scarcer, pricier, more mythologized. The clip of the show is everywhere; the feeling of the show is only in the room. That gap is where live culture gets its power, and it's why performance footage, done right, is the most emotional format in music media." },
+        { "type": "paragraph", "text": "Our Performances vertical — the Mic Drop rail on the homepage — is dedicated to takes that capture the room: one performance, minimal cuts, sound treated with respect. No reaction-cam clutter. The moment, preserved." },
+        { "type": "pullQuote", "text": "The clip is everywhere. The feeling is only in the room." }
+      ]
+    },
+    {
+      "slug": "the-independent-artist-stack",
+      "title": "The Independent Artist Stack: What You Actually Need",
+      "dek": "Distribution, publishing admin, a mailing list, and one honest spreadsheet. Everything else is optional.",
+      "category": "business",
+      "author": { "slug": "preee-editorial", "name": "Preee Editorial", "role": "Editorial Team" },
+      "publishedAt": "2026-08-17T09:00:00-04:00",
+      "hero": { "src": "/seed/board-16x9.jpg", "alt": "Abstract mixing-board editorial graphic in green tones", "credit": "Preee TV", "rightsStatus": "generated" },
+      "evergreen": true,
+      "tags": ["independent", "tools", "money"],
+      "body": [
+        { "type": "paragraph", "text": "The independent artist economy runs on subscriptions, and most of them are selling you anxiety. Strip it down and the essential stack is short: a distributor to get on the services, publishing administration so your songwriting money gets collected, a direct line to fans you own (an email or text list — not a rented algorithm), and a spreadsheet that tells you the truth about what's coming in and going out." },
+        { "type": "heading", "text": "Own the relationship" },
+        { "type": "paragraph", "text": "Platforms rise and fall; the list is forever. The artists who survived every algorithm change of the last decade are the ones who could reach a thousand true fans without asking a feed's permission. Build that before you build anything else." },
+        { "type": "pullQuote", "text": "A rented audience is a lease. The list is a deed." }
+      ]
+    },
+    {
+      "slug": "scene-report-how-local-scenes-break-artists",
+      "title": "Scene Report: How Local Scenes Still Break Artists",
+      "dek": "The internet was supposed to make geography irrelevant. Instead, cities became genres again.",
+      "category": "music",
+      "author": { "slug": "preee-editorial", "name": "Preee Editorial", "role": "Editorial Team" },
+      "publishedAt": "2026-08-19T09:00:00-04:00",
+      "hero": { "src": "/seed/city-16x9.jpg", "alt": "Abstract city-block editorial graphic in slate tones", "credit": "Preee TV", "rightsStatus": "generated" },
+      "evergreen": true,
+      "tags": ["scenes", "discovery"],
+      "body": [
+        { "type": "paragraph", "text": "Every few years someone declares the local scene dead, and every few years a city proves them wrong by minting a sound the whole world ends up borrowing. The pattern holds because scenes solve the problems the internet can't: rehearsal space, rivalry, mentorship, and a first audience that shows up in person." },
+        { "type": "paragraph", "text": "Preee TV's scene reports will work city by city — the venues holding it down, the producers everyone records with, the one radio show or party that functions as the scene's front door. If your city deserves the treatment, the submission inbox is open." },
+        { "type": "pullQuote", "text": "Cities became genres again." }
+      ]
+    },
+    {
+      "slug": "sampling-the-law-and-the-loophole",
+      "title": "Sampling: The Art, the Law, and the Expensive Middle",
+      "dek": "A working musician's guide to clearance culture — what a sample really costs and why interpolation ate the charts.",
+      "category": "business",
+      "author": { "slug": "preee-editorial", "name": "Preee Editorial", "role": "Editorial Team" },
+      "publishedAt": "2026-08-21T09:00:00-04:00",
+      "hero": { "src": "/seed/tape-16x9.jpg", "alt": "Abstract tape-reel editorial graphic in red-brown tones", "credit": "Preee TV", "rightsStatus": "generated" },
+      "evergreen": true,
+      "tags": ["sampling", "rights", "money"],
+      "body": [
+        { "type": "paragraph", "text": "Sampling built entire genres, and clearing samples has bankrupted entire albums. Using a piece of an existing recording means clearing two separate rights: the recording itself (the master, usually a label's) and the underlying song (the publishing, usually split among writers). Miss either one and the release can be pulled — or worse, the profits can be signed away after the fact." },
+        { "type": "paragraph", "text": "That cost is why interpolation — re-recording the melody instead of lifting the audio — took over the mainstream. You still owe the songwriters, but the master clearance disappears, and with it the most expensive negotiation. It's a legal workaround that quietly reshaped how pop music sounds." },
+        { "type": "pullQuote", "text": "Two rights, two negotiations, one song. That's the sample economy." },
+        { "type": "paragraph", "text": "None of this is legal advice — it's a map of the terrain. Clear early, get it in writing, and price the sample before you fall in love with it." }
+      ]
+    },
+    {
+      "slug": "festival-season-survival-guide",
+      "title": "The Preee Guide to Surviving (and Actually Enjoying) Festival Season",
+      "dek": "Set-clash strategy, small-print stage discoveries, and why the best set you'll see is at 2pm on the stage nobody's talking about.",
+      "category": "culture",
+      "author": { "slug": "preee-editorial", "name": "Preee Editorial", "role": "Editorial Team" },
+      "publishedAt": "2026-08-24T09:00:00-04:00",
+      "hero": { "src": "/seed/pulse-16x9.jpg", "alt": "Abstract concentric pulse editorial graphic in violet tones", "credit": "Preee TV", "rightsStatus": "generated" },
+      "evergreen": true,
+      "tags": ["festivals", "live"],
+      "body": [
+        { "type": "paragraph", "text": "Festival lineups are designed to be read top-down, and festival memories are almost always made bottom-up. The headliner you already know will be fine. The 2pm set by an act in the smallest font — the one playing like the whole year depends on it, because it does — is where you'll find the story you tell for a decade." },
+        { "type": "paragraph", "text": "Our Culture Calendar tracks festivals alongside releases, award shows, and community events, so you can plan around the moments instead of scrambling after them. Filter by city, by category, or by date — and add anything straight to your own calendar." },
+        { "type": "pullQuote", "text": "Headliners are for the feed. Small fonts are for the memory." }
+      ]
+    },
+    {
+      "slug": "the-art-of-the-cosign",
+      "title": "The Co-Sign Economy: How Trust Travels in Music",
+      "dek": "Before playlists and after them, one thing has always broken artists: the right person saying 'listen to this.'",
+      "category": "music",
+      "author": { "slug": "preee-editorial", "name": "Preee Editorial", "role": "Editorial Team" },
+      "publishedAt": "2026-08-26T09:00:00-04:00",
+      "hero": { "src": "/seed/vinyl-16x9.jpg", "alt": "Abstract vinyl-record circular editorial graphic in charcoal tones", "credit": "Preee TV", "rightsStatus": "generated" },
+      "evergreen": true,
+      "tags": ["discovery", "curation"],
+      "body": [
+        { "type": "paragraph", "text": "Strip away every platform shift of the last thirty years and music discovery still runs on the same primitive: a person you trust vouching for a sound you haven't heard. The mixtape, the blog post, the playlist add, the repost — different containers, same transaction. Trust travels person to person, and it compounds." },
+        { "type": "paragraph", "text": "That's the entire theory behind Preee TV. We're not trying to out-scale the algorithms; we're trying to out-care them. Every spotlight, every interview seat, every performance slot is a co-sign we expect to be held accountable for." },
+        { "type": "pullQuote", "text": "We're not trying to out-scale the algorithm. We're trying to out-care it." }
+      ]
+    }
+  ],
+  "episodes": [
+    {
+      "slug": "preee-tv-season-one-trailer",
+      "title": "Preee TV: Season One",
+      "description": "The first look at what Preee TV is building — interviews, performances, and the conversations behind the headlines. New episodes rolling out now.",
+      "poster": { "src": "/seed/neon-16x9.jpg", "alt": "Preee TV season one abstract title card", "credit": "Preee TV", "rightsStatus": "generated" },
+      "runtime": "2:10",
+      "publishedAt": "2026-08-01T12:00:00-04:00",
+      "topics": ["Preee TV", "Trailer"],
+      "comingSoon": true,
+      "relatedArticleSlugs": ["welcome-to-preee-tv"]
+    },
+    {
+      "slug": "the-first-conversation",
+      "title": "The First Conversation: Why We Built Preee TV",
+      "guest": "Preee Editorial Team",
+      "description": "The founding team on culture-first coverage, why the co-sign still matters, and what artists should expect from the platform.",
+      "poster": { "src": "/seed/mic-16x9.jpg", "alt": "Abstract microphone graphic title card for the founding conversation", "credit": "Preee TV", "rightsStatus": "generated" },
+      "runtime": "24:00",
+      "publishedAt": "2026-08-08T12:00:00-04:00",
+      "topics": ["Interviews", "Preee TV"],
+      "comingSoon": true,
+      "transcript": "Full transcript will be published with the episode.",
+      "relatedArticleSlugs": ["what-makes-a-great-music-interview", "how-we-choose-what-we-cover"]
+    },
+    {
+      "slug": "mic-drop-session-001",
+      "title": "Mic Drop Session 001",
+      "description": "One artist, one take, one room. The first Preee TV performance session — shot to be rewatched.",
+      "poster": { "src": "/seed/amp-16x9.jpg", "alt": "Abstract amplifier graphic title card for Mic Drop Session 001", "credit": "Preee TV", "rightsStatus": "generated" },
+      "runtime": "8:45",
+      "publishedAt": "2026-08-15T12:00:00-04:00",
+      "topics": ["Performances", "Mic Drop"],
+      "comingSoon": true,
+      "relatedArticleSlugs": ["live-music-is-the-last-scarcity"]
+    },
+    {
+      "slug": "the-business-of-the-breakout",
+      "title": "The Business of the Breakout",
+      "guest": "Industry roundtable",
+      "description": "Managers, a distributor, and an indie label head on what actually happens in the 90 days after a song takes off.",
+      "poster": { "src": "/seed/signal-16x9.jpg", "alt": "Abstract signal bars graphic title card for the business roundtable", "credit": "Preee TV", "rightsStatus": "generated" },
+      "runtime": "31:20",
+      "publishedAt": "2026-08-22T12:00:00-04:00",
+      "topics": ["The Business", "Streaming"],
+      "comingSoon": true,
+      "relatedArticleSlugs": ["streaming-royalties-explained", "the-anatomy-of-a-breakout-record"]
+    },
+    {
+      "slug": "scene-report-episode-one",
+      "title": "Scene Report: Episode One",
+      "description": "Preee TV goes city by city. The venues, the producers, and the party that functions as the scene's front door.",
+      "poster": { "src": "/seed/city-16x9.jpg", "alt": "Abstract city blocks graphic title card for Scene Report", "credit": "Preee TV", "rightsStatus": "generated" },
+      "runtime": "17:05",
+      "publishedAt": "2026-08-27T12:00:00-04:00",
+      "topics": ["Music", "Scenes"],
+      "comingSoon": true,
+      "relatedArticleSlugs": ["scene-report-how-local-scenes-break-artists"]
+    },
+    {
+      "slug": "sample-clearance-war-stories",
+      "title": "Sample Clearance War Stories",
+      "guest": "Clearance specialists",
+      "description": "The deals that saved albums and the ones that sank them — clearance culture from the people who negotiate it.",
+      "poster": { "src": "/seed/tape-16x9.jpg", "alt": "Abstract tape reel graphic title card for the sample clearance episode", "credit": "Preee TV", "rightsStatus": "generated" },
+      "runtime": "26:40",
+      "publishedAt": "2026-08-29T12:00:00-04:00",
+      "topics": ["The Business", "Rights"],
+      "comingSoon": true,
+      "relatedArticleSlugs": ["sampling-the-law-and-the-loophole"]
+    }
+  ],
+  "events": [
+    {
+      "id": "preee-launch-week",
+      "title": "Preee TV Launch Week",
+      "category": "Preee TV",
+      "start": "2026-09-07T12:00:00-04:00",
+      "end": "2026-09-11T22:00:00-04:00",
+      "timezone": "America/New_York",
+      "city": "Online",
+      "description": "A week of new drops across the platform — episodes, spotlights, and the first Mic Drop session.",
+      "sourceUrl": "",
+      "featured": true
+    },
+    {
+      "id": "mic-drop-001-premiere",
+      "title": "Mic Drop Session 001 — Premiere",
+      "category": "Preee TV",
+      "start": "2026-09-10T20:00:00-04:00",
+      "timezone": "America/New_York",
+      "city": "Online",
+      "description": "The first Preee TV performance session premieres on the Watch page.",
+      "featured": true
+    },
+    {
+      "id": "new-music-friday-sept-11",
+      "title": "Release Radar: New Music Friday",
+      "category": "Release",
+      "start": "2026-09-11T00:00:00-04:00",
+      "timezone": "America/New_York",
+      "city": "Global",
+      "description": "The weekly release flood. Preee's shortlist of what's worth your first listen lands in the newsletter."
+    },
+    {
+      "id": "industry-mixer-atl",
+      "title": "Industry Night: Producers & A&Rs Mixer",
+      "category": "Industry",
+      "start": "2026-09-17T19:00:00-04:00",
+      "timezone": "America/New_York",
+      "city": "Atlanta",
+      "venue": "TBA",
+      "description": "Monthly networking night for producers, writers, and A&Rs. Details announced via the newsletter."
+    },
+    {
+      "id": "fall-festival-window",
+      "title": "Fall Festival Window Opens",
+      "category": "Festival",
+      "start": "2026-09-25T12:00:00-04:00",
+      "end": "2026-11-15T23:00:00-05:00",
+      "timezone": "America/New_York",
+      "city": "Various",
+      "description": "The autumn festival run begins. Preee's small-font picks — the 2pm sets worth showing up early for — publish throughout the season."
+    },
+    {
+      "id": "community-open-mic-oct",
+      "title": "Community Open Mic Night",
+      "category": "Community",
+      "start": "2026-10-01T19:30:00-04:00",
+      "timezone": "America/New_York",
+      "city": "Brooklyn",
+      "venue": "TBA",
+      "description": "Open sign-up performance night. First-come list; bring your own backing tracks."
+    },
+    {
+      "id": "culture-panel-film-and-sound",
+      "title": "Panel: Film & Sound — Scoring the Culture",
+      "category": "Culture",
+      "start": "2026-10-08T18:30:00-04:00",
+      "timezone": "America/New_York",
+      "city": "Los Angeles",
+      "venue": "TBA",
+      "description": "Composers and music supervisors on how a scene finds its sound."
+    },
+    {
+      "id": "preee-interview-drop-oct",
+      "title": "New Interview Drop",
+      "category": "Preee TV",
+      "start": "2026-10-15T12:00:00-04:00",
+      "timezone": "America/New_York",
+      "city": "Online",
+      "description": "A new long-form Preee TV conversation lands on the Watch page."
+    },
+    {
+      "id": "award-season-kickoff",
+      "title": "Award Season Kickoff: Nominations Window",
+      "category": "Award Show",
+      "start": "2026-11-20T09:00:00-05:00",
+      "timezone": "America/New_York",
+      "city": "Global",
+      "description": "Nominations season opens across the major music award cycles. The Business will track who benefits and how the voting math works."
+    },
+    {
+      "id": "year-end-lists-window",
+      "title": "Year-End Lists Season",
+      "category": "Music",
+      "start": "2026-12-01T09:00:00-05:00",
+      "end": "2026-12-31T23:00:00-05:00",
+      "timezone": "America/New_York",
+      "city": "Global",
+      "description": "Every publication ranks the year. Preee's list rules: no consensus picks without a defense, and at least half the list has to be something we told you about first."
+    }
+  ],
+  "artists": [
+    {
+      "slug": "spotlight-slot-one",
+      "name": "Your Artist Here",
+      "origin": "Anywhere",
+      "genre": "All genres",
+      "oneLiner": "The first Preee TV Artist Spotlight is open. Submissions are being reviewed now — a real human listens to everything.",
+      "bio": "The Artist Spotlight is Preee TV's flagship co-sign: one artist, deep coverage, real context. Spotlights are chosen from submissions and scene reports — never sold. When we put a name here, we're telling you to remember it.",
+      "image": { "src": "/seed/wave-1x1.jpg", "alt": "Abstract waveform graphic reserving the artist spotlight slot", "credit": "Preee TV", "rightsStatus": "generated" },
+      "spotlight": true,
+      "links": [{ "label": "Submit your music", "url": "/submit-music" }]
+    },
+    {
+      "slug": "spotlight-slot-two",
+      "name": "Next Up: TBA",
+      "origin": "—",
+      "genre": "—",
+      "oneLiner": "Spotlight number two is in the listening pile. It could be you.",
+      "image": { "src": "/seed/pulse-1x1.jpg", "alt": "Abstract pulse graphic reserving a future artist spotlight slot", "credit": "Preee TV", "rightsStatus": "generated" },
+      "spotlight": false,
+      "links": [{ "label": "Submit your music", "url": "/submit-music" }]
+    }
+  ]
+}
