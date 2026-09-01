@@ -69,10 +69,12 @@ export function CalendarView({
     return events.filter((e) => {
       if (category !== "All" && e.category !== category) return false;
       if (city !== "All" && e.city !== city) return false;
-      const start = new Date(e.start).getTime();
-      const end = e.end ? new Date(e.end).getTime() : start;
-      if (from && end < new Date(`${from}T00:00:00`).getTime()) return false;
-      if (to && start > new Date(`${to}T23:59:59`).getTime()) return false;
+      // Compare in the event's own timezone so the filter agrees with the
+      // dates shown in the list and month views (YYYY-MM-DD sorts lexically).
+      const startKey = eventDayKey(e.start, e.timezone);
+      const endKey = e.end ? eventDayKey(e.end, e.timezone) : startKey;
+      if (from && endKey < from) return false;
+      if (to && startKey > to) return false;
       return true;
     });
   }, [events, category, city, from, to]);

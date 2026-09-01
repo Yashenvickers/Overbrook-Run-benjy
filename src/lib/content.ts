@@ -108,7 +108,10 @@ export const getArtists = cache(async (): Promise<ArtistProfile[]> => {
 export const getBreaking = cache(async (): Promise<BreakingItem | null> => {
   if (sanityConfigured) {
     const data = await sanityFetch<BreakingItem[]>(breakingQuery);
-    if (data && data.length > 0) return data[0];
+    // An empty successful result means editors deactivated every notice —
+    // honor that instead of resurrecting the seed banner. The seed fallback
+    // is only for an unconfigured CMS.
+    if (data) return data[0] ?? null;
   }
   return seedContent.breaking.find((b) => b.active) ?? null;
 });

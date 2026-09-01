@@ -5,15 +5,40 @@
  * where dependencies cannot be installed.
  */
 import { createRequire } from "node:module";
+import { execSync } from "node:child_process";
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 
 const require = createRequire(import.meta.url);
+
+function globalNpmTypescript() {
+  try {
+    return join(execSync("npm root -g", { encoding: "utf8" }).trim(), "typescript");
+  } catch {
+    return undefined;
+  }
+}
+
 let ts;
-try {
-  ts = require("typescript");
-} catch {
-  ts = require(process.env.TS_FALLBACK ?? "/home/claude/.npm-global/lib/node_modules/typescript");
+for (const candidate of ["typescript", process.env.TS_FALLBACK, globalNpmTypescript()]) {
+  if (!candidate) continue;
+  try {
+    const mod = require(candidate);
+    // typescript@7 (the native preview) has no compiler API — keep looking.
+    if (typeof mod.createSourceFile === "function") {
+      ts = mod;
+      break;
+    }
+  } catch {
+    // try the next candidate
+  }
+}
+if (!ts) {
+  console.error(
+    "Could not resolve the TypeScript compiler API. Run `npm install`, install typescript@5 globally, " +
+      "or set TS_FALLBACK to a typescript package directory.",
+  );
+  process.exit(1);
 }
 
 const ROOTS = ["src", "sanity", "tests", "."];
