@@ -11,6 +11,7 @@ This package contains the LeftoverIQ iPhone app: the full source code, the app i
 | `README-DEVELOPER.md` | Step-by-step guide for building, testing and submitting to the App Store. |
 | `APP_STORE_LISTING.md` | Ready-to-paste App Store name, subtitle, description, keywords and review notes. |
 | `PRIVACY_POLICY.md` | Privacy policy to edit and publish on a website (Apple requires one). |
+| `app-preview.html` | A clickable preview of the app's screens. Open it in any browser, on a computer or a phone. |
 | `concept-website/index.html` | The LeftoverIQ concept page. Open it in any browser. |
 
 ## What the app does today (version 1.0)

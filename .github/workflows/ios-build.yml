@@ -4,7 +4,9 @@ on:
   push:
     paths:
       - "leftoveriq-ios/**"
-      - ".github/workflows/ios-build.yml"
+      # Docs and the HTML preview don't affect the app build.
+      - "!leftoveriq-ios/**/*.md"
+      - "!leftoveriq-ios/**/*.html"
   workflow_dispatch:
 
 concurrency:

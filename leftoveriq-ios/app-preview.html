@@ -1,0 +1,743 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f2f2f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<title>LeftoverIQ iPhone Preview</title>
+<style>
+:root{
+  --bg:#f2f2f7; --cell:#ffffff; --cell2:#f2f2f7; --fill:#e9e9eb; --label:#000; --label2:rgba(60,60,67,.6); --label3:rgba(60,60,67,.3);
+  --sep:rgba(60,60,67,.29); --accent:#1f6b4a; --on-accent:#fff; --green:#34c759; --orange:#ff9500; --red:#ff3b30; --blue:#007aff;
+  --bar:rgba(249,249,249,.94); --page:#e7e3da; --page-ink:#1d2a23; --page-muted:#5d6b63; --frame:#111;
+  --sheet-dim:rgba(0,0,0,.35);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#000; --cell:#1c1c1e; --cell2:#2c2c2e; --fill:#3a3a3c; --label:#fff; --label2:rgba(235,235,245,.6); --label3:rgba(235,235,245,.3);
+    --sep:rgba(84,84,88,.6); --accent:#5cc28f; --on-accent:#03140c; --green:#30d158; --orange:#ff9f0a; --red:#ff453a; --blue:#0a84ff;
+    --bar:rgba(22,22,24,.94); --page:#0e1311; --page-ink:#eef3ef; --page-muted:#9db0a5; --frame:#2a2a2a; --sheet-dim:rgba(0,0,0,.55);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#000; --cell:#1c1c1e; --cell2:#2c2c2e; --fill:#3a3a3c; --label:#fff; --label2:rgba(235,235,245,.6); --label3:rgba(235,235,245,.3);
+  --sep:rgba(84,84,88,.6); --accent:#5cc28f; --on-accent:#03140c; --green:#30d158; --orange:#ff9f0a; --red:#ff453a; --blue:#0a84ff;
+  --bar:rgba(22,22,24,.94); --page:#0e1311; --page-ink:#eef3ef; --page-muted:#9db0a5; --frame:#2a2a2a; --sheet-dim:rgba(0,0,0,.55);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%}
+body{background:var(--page);color:var(--page-ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden}
+button,input,select,textarea{font:inherit;color:inherit}
+button{background:none;border:0;padding:0;cursor:pointer}
+svg.i{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+/* ---------- stage ---------- */
+.stage{height:100%;display:flex;align-items:center;justify-content:center;gap:56px;padding:20px}
+.side{max-width:330px}
+.side h1{font-size:30px;letter-spacing:-.02em;margin:0 0 10px;line-height:1.1}
+.side p{color:var(--page-muted);margin:0 0 14px;line-height:1.5;font-size:15px}
+.side .tips{list-style:none;padding:0;margin:0 0 18px;display:grid;gap:8px;font-size:14px;color:var(--page-muted)}
+.side .tips b{color:var(--page-ink)}
+.side .row{display:flex;gap:10px;flex-wrap:wrap}
+.side button{padding:9px 14px;border-radius:999px;border:1px solid var(--page-muted);font-size:14px;font-weight:600}
+.side button.primary{background:var(--page-ink);color:var(--page);border-color:var(--page-ink)}
+.side small{display:block;margin-top:16px;color:var(--page-muted);font-size:12px;line-height:1.5}
+.scaler{flex:none;transform-origin:center center}
+.device{width:390px;height:844px;border-radius:58px;background:var(--frame);padding:12px;box-shadow:0 30px 80px -25px rgba(0,0,0,.45),inset 0 0 0 2px #3a3a3a}
+.screen{width:100%;height:100%;border-radius:47px;overflow:hidden;position:relative;background:var(--bg);color:var(--label);font-size:17px;letter-spacing:-.01em;isolation:isolate}
+.island{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:122px;height:35px;border-radius:20px;background:#000;z-index:60}
+.status{position:absolute;top:0;left:0;right:0;height:54px;display:flex;justify-content:space-between;align-items:center;padding:6px 34px 0 46px;font-size:16px;font-weight:600;z-index:55;pointer-events:none}
+.status .r{display:flex;gap:6px;align-items:center}
+.homebar{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:136px;height:5px;border-radius:3px;background:var(--label);opacity:.85;z-index:70;pointer-events:none}
+@media (max-width:820px){.side{display:none}}
+@media (max-width:500px){
+  body{background:var(--bg)}
+  .stage{padding:0;display:block}
+  .scaler{transform:none!important;width:100%;height:100%}
+  .device{width:100%;height:100%;border-radius:0;padding:0;box-shadow:none;background:none}
+  .screen{border-radius:0}
+  .island,.status,.homebar{display:none}
+  .screen .app{--top:max(env(safe-area-inset-top,0px),10px);--bottom:env(safe-area-inset-bottom,0px)}
+}
+
+/* ---------- app chrome ---------- */
+.app{--top:54px;--bottom:22px;position:absolute;inset:0;display:flex;flex-direction:column}
+.pages{position:relative;flex:1;overflow:hidden}
+.page{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg)}
+.page.push{animation:push .32s cubic-bezier(.2,.8,.2,1)}
+@keyframes push{from{transform:translateX(100%)}to{transform:none}}
+@media (prefers-reduced-motion:reduce){.page.push,.sheet,.alert,.action{animation:none!important}}
+.navbar{padding-top:var(--top);flex:none;position:relative;z-index:5;background:var(--bg);transition:background .2s}
+.navbar.scrolled{background:var(--bar);backdrop-filter:saturate(180%) blur(20px);box-shadow:0 .5px 0 var(--sep)}
+.navrow{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;position:relative}
+.navrow .ttl{position:absolute;left:90px;right:90px;text-align:center;font-weight:600;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:0;transition:opacity .15s}
+.navbar.scrolled .ttl,.navbar.inline .ttl{opacity:1}
+.navbtn{color:var(--accent);display:flex;align-items:center;gap:2px;font-size:17px;min-height:44px;min-width:30px}
+.navbtn.back{margin-left:-8px}
+.navbtn svg.i{width:24px;height:24px}
+.navright{display:flex;gap:18px;margin-left:auto}
+.scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:calc(84px + var(--bottom))}
+.scroll::-webkit-scrollbar{display:none}
+.large{font-size:34px;font-weight:700;letter-spacing:.01em;margin:2px 16px 8px;line-height:41px}
+.search{margin:0 16px 14px;display:flex;align-items:center;gap:6px;background:var(--fill);border-radius:10px;padding:0 8px;height:36px;color:var(--label2)}
+.search input::-webkit-search-cancel-button{display:none}
+.search input{flex:1;border:0;background:none;outline:none;color:var(--label);font-size:17px;min-width:0}
+.search svg.i{width:18px;height:18px}
+
+.tabbar{position:absolute;left:0;right:0;bottom:0;z-index:20;background:var(--bar);backdrop-filter:saturate(180%) blur(20px);box-shadow:0 -.5px 0 var(--sep);display:flex;padding:7px 4px calc(var(--bottom) + 4px)}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;font-weight:500;color:#999;min-height:46px}
+.tab svg.i{width:26px;height:26px}
+.tab.on{color:var(--accent)}
+
+/* ---------- lists ---------- */
+.sec{margin:0 16px 22px}
+.sec-h{font-size:13px;color:var(--label2);text-transform:uppercase;margin:0 16px 7px;display:flex;align-items:center;gap:6px}
+.sec-h svg.i{width:15px;height:15px}
+.sec-f{font-size:13px;color:var(--label2);margin:7px 16px 0;line-height:1.35}
+.group{background:var(--cell);border-radius:10px;overflow:hidden}
+.cell{position:relative;display:flex;align-items:center;gap:12px;min-height:44px;padding:8px 16px;background:var(--cell);width:100%;text-align:left}
+.cell + .cell::before,.swipe + .swipe::before,.swipe + .cell::before,.cell + .swipe::before{content:"";position:absolute;top:0;left:var(--inset,16px);right:0;height:.5px;background:var(--sep);z-index:2}
+.cell.btn{color:var(--accent)}
+.cell.btn.danger{color:var(--red)}
+.cell.tappable:active{background:var(--fill)}
+.cell .grow{flex:1;min-width:0}
+.cell .t{display:block}
+.cell .t.m{font-weight:500}
+.cell .t.s{font-weight:600}
+.cell .sub{display:block;font-size:12px;color:var(--label2);margin-top:2px}
+.cell .val{color:var(--label2)}
+.chev{color:var(--label3);width:14px!important;height:14px!important;stroke-width:2.6!important}
+.emo{width:40px;height:40px;border-radius:10px;background:var(--cell2);display:grid;place-items:center;font-size:23px;flex:none}
+.emo.lg{width:48px;height:48px;border-radius:12px;font-size:28px}
+.badge{font-size:12px;font-weight:600;padding:3px 8px;border-radius:999px;white-space:nowrap}
+.chip{font-size:11px;font-weight:600;padding:3px 7px;border-radius:999px;white-space:nowrap;display:inline-block}
+.c-red{color:var(--red);background:color-mix(in srgb,var(--red) 15%,transparent)}
+.c-orange{color:var(--orange);background:color-mix(in srgb,var(--orange) 15%,transparent)}
+.c-green{color:var(--green);background:color-mix(in srgb,var(--green) 15%,transparent)}
+.c-blue{color:var(--blue);background:color-mix(in srgb,var(--blue) 15%,transparent)}
+.c-accent{color:var(--accent);background:color-mix(in srgb,var(--accent) 15%,transparent)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+
+.seg{margin:0 16px 22px;display:flex;background:var(--fill);border-radius:9px;padding:2px;gap:2px}
+.seg button{flex:1;height:28px;border-radius:7px;font-size:13px;font-weight:500}
+.seg button.on{background:var(--cell);box-shadow:0 3px 8px rgba(0,0,0,.12),0 0 0 .5px rgba(0,0,0,.04);font-weight:600}
+:root[data-theme="dark"] .seg button.on{background:#636366}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .seg button.on{background:#636366}}
+
+.empty{text-align:center;padding:26px 20px;display:flex;flex-direction:column;align-items:center;gap:8px}
+.empty svg.i{width:44px;height:44px;color:var(--label2);stroke-width:1.5}
+.empty h3{margin:4px 0 0;font-size:20px}
+.empty p{margin:0;color:var(--label2);font-size:15px;line-height:1.35}
+.pbtn{background:var(--accent);color:var(--on-accent);border-radius:999px;padding:8px 16px;font-weight:600;font-size:15px}
+.pbtn.block{border-radius:12px;padding:14px;width:100%;font-size:17px;display:flex;justify-content:center;align-items:center;gap:8px}
+.lbtn{color:var(--accent);font-size:15px;padding:6px}
+.fchips{display:flex;gap:8px;margin:0 16px 22px;overflow-x:auto;scrollbar-width:none}
+.fchips::-webkit-scrollbar{display:none}
+.fchip{flex:none;padding:6px 12px;border-radius:8px;font-size:15px;font-weight:500;background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--accent)}
+.fchip.on{background:var(--accent);color:var(--on-accent)}
+.snap{display:flex;gap:14px;align-items:center}
+.snap .ic{width:52px;height:52px;border-radius:14px;background:var(--accent);color:#fff;display:grid;place-items:center;flex:none}
+.snap .ic svg.i{width:30px;height:30px}
+.check{width:24px;height:24px;color:var(--label3)}
+.check.on{color:var(--accent)}
+.strike{text-decoration:line-through;color:var(--label2)}
+.addrow input{flex:1;border:0;background:none;outline:none;font-size:17px;min-width:0}
+.addbtn{color:var(--accent)}
+.addbtn svg.i{width:28px;height:28px;stroke-width:1.6}
+.addbtn:disabled{color:var(--label3)}
+
+/* swipe */
+.swipe{position:relative;overflow:hidden}
+.swipe .acts{position:absolute;top:0;right:0;bottom:0;display:flex}
+.swipe .acts button{width:78px;color:#fff;font-size:13px;font-weight:500;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
+.swipe .acts svg.i{width:20px;height:20px}
+.swipe .front{position:relative;z-index:1;transition:transform .25s ease;touch-action:pan-y}
+.swipe .front.drag{transition:none}
+.a-green{background:var(--green)}.a-red{background:var(--red)}
+
+/* recipe detail */
+.hero{padding:14px 16px 4px;background:var(--cell)}
+.hero .big{font-size:56px;line-height:1.1}
+.hero h2{margin:6px 0 8px;font-size:22px;line-height:1.2}
+.ing{display:block}
+.ing .top{display:flex;align-items:center;gap:8px}
+.ing .top svg.i{width:20px;height:20px}
+.swap{display:flex;gap:6px;align-items:flex-start;margin:6px 0 0 28px;font-size:13px}
+.swap svg.i{width:14px;height:14px;margin-top:2px;color:var(--label2)}
+.num{width:26px;height:26px;border-radius:50%;background:color-mix(in srgb,var(--accent) 15%,transparent);display:grid;place-items:center;font-weight:700;font-size:15px;flex:none}
+.step{align-items:flex-start}
+.step p{margin:2px 0;line-height:1.35}
+
+/* forms */
+.cell input.txt,.cell textarea{flex:1;border:0;background:none;outline:none;font-size:17px;min-width:0;padding:0}
+.cell textarea{min-height:120px;resize:none;line-height:1.35;padding:4px 0}
+.cell select,.cell input[type=date]{border:0;background:none;color:var(--label2);font-size:17px;text-align:right;outline:none;max-width:60%}
+.cell input[type=date]{color:var(--accent);background:var(--fill);border-radius:7px;padding:4px 8px;font-size:15px}
+.toggle{width:51px;height:31px;border-radius:16px;background:var(--fill);position:relative;flex:none;transition:background .2s}
+.toggle::after{content:"";position:absolute;top:2px;left:2px;width:27px;height:27px;border-radius:50%;background:#fff;box-shadow:0 3px 8px rgba(0,0,0,.15);transition:transform .2s}
+.toggle.on{background:var(--green)}
+.toggle.on::after{transform:translateX(20px)}
+.toggle:disabled{opacity:.5}
+
+/* overlays */
+.dim{position:absolute;inset:0;background:var(--sheet-dim);z-index:80;animation:fade .25s}
+@keyframes fade{from{opacity:0}}
+.sheet{position:absolute;left:0;right:0;bottom:0;top:calc(var(--top) + 10px);background:var(--bg);border-radius:12px 12px 0 0;z-index:90;display:flex;flex-direction:column;animation:up .32s cubic-bezier(.2,.8,.2,1);overflow:hidden}
+.sheet.full{top:0;border-radius:0}
+@keyframes up{from{transform:translateY(100%)}}
+.sheet .navbar{padding-top:0;background:var(--bg)}
+.sheet .navrow .ttl{opacity:1;left:80px;right:80px}
+.sheet .scroll{padding-bottom:calc(30px + var(--bottom))}
+.sheet .navbtn.bold{font-weight:600}
+.navbtn:disabled{color:var(--label3)}
+.alert{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:270px;background:var(--bar);backdrop-filter:blur(30px);border-radius:14px;z-index:110;text-align:center;overflow:hidden;animation:pop .2s}
+@keyframes pop{from{transform:translate(-50%,-50%) scale(1.15);opacity:0}}
+.alert .body{padding:19px 16px 18px}
+.alert h4{margin:0 0 4px;font-size:17px}
+.alert p{margin:0;font-size:13px;line-height:1.35}
+.alert .btns{display:flex;border-top:.5px solid var(--sep)}
+.alert .btns button{flex:1;height:44px;color:var(--blue);font-size:17px}
+.alert .btns button + button{border-left:.5px solid var(--sep)}
+.alert .btns button.bold{font-weight:600}
+.action{position:absolute;left:8px;right:8px;bottom:calc(var(--bottom) + 8px);z-index:110;animation:up .28s cubic-bezier(.2,.8,.2,1)}
+.action .grp{background:var(--bar);backdrop-filter:blur(30px);border-radius:14px;overflow:hidden;margin-bottom:8px;text-align:center}
+.action .grp p{margin:0;padding:14px 16px;font-size:13px;color:var(--label2);font-weight:600}
+.action button{display:block;width:100%;height:57px;font-size:20px;color:var(--blue);border-top:.5px solid var(--sep)}
+.action button.cancel{font-weight:600;background:var(--cell);border-radius:14px;border:0}
+.action button.danger{color:var(--red)}
+
+/* onboarding */
+.ob{position:absolute;inset:0;z-index:100;background:var(--bg);display:flex;flex-direction:column;padding:calc(var(--top) + 40px) 0 calc(var(--bottom) + 16px)}
+.ob .pg{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 32px;gap:18px;animation:fade .3s}
+.ob .pg svg.i{width:84px;height:84px;color:var(--accent);stroke-width:1.4}
+.ob h2{font-size:34px;line-height:1.12;margin:0}
+.ob p{font-size:20px;color:var(--label2);margin:0;line-height:1.3}
+.dots{display:flex;gap:8px;justify-content:center;margin:18px 0 24px}
+.dots span{width:8px;height:8px;border-radius:50%;background:var(--label3)}
+.dots span.on{background:var(--label)}
+.ob .pbtn{margin:0 24px}
+.ob .skip{color:var(--accent);font-size:17px;padding:14px;margin-top:4px}
+
+/* scan */
+.photo{height:200px;border-radius:14px;overflow:hidden;background:var(--cell2);display:grid;place-items:center}
+.photo img{width:100%;height:100%;object-fit:cover}
+.scene{width:100%;height:100%;background:linear-gradient(160deg,#c9b79c,#8f7a5c);display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:4px 14px;font-size:44px;padding:10px}
+.placeholder{text-align:center;color:var(--label2);font-size:15px;padding:22px 20px;display:flex;flex-direction:column;gap:8px;align-items:center}
+.placeholder svg.i{width:46px;height:46px;color:var(--accent)}
+.btnrow{display:flex;gap:10px;justify-content:center;margin:12px 0 0;flex-wrap:wrap}
+.bbtn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;font-size:15px;font-weight:600;background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--accent)}
+.bbtn.fill{background:var(--accent);color:var(--on-accent)}
+.bbtn svg.i{width:18px;height:18px}
+.spin{width:20px;height:20px;border-radius:50%;border:2.5px solid var(--label3);border-top-color:var(--label2);animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.note{font-size:12px;color:var(--label2)}
+</style>
+</head>
+<body>
+<div class="stage">
+  <aside class="side">
+    <h1>LeftoverIQ on iPhone</h1>
+    <p>A clickable preview of the LeftoverIQ iPhone app. Each screen copies the app's layout and uses the same recipes, ingredients and swaps as the real app's code.</p>
+    <ul class="tips">
+      <li><b>Tap the tabs</b> at the bottom to switch screens.</li>
+      <li><b>Swipe left</b> on a kitchen item to mark it Used or Tossed.</li>
+      <li><b>Tap a recipe</b> to see what you have, what's missing, and swaps.</li>
+      <li><b>Check off groceries</b>, then put them away in your kitchen.</li>
+    </ul>
+    <div class="row">
+      <button class="primary" onclick="App.reset()">Restart preview</button>
+      <button onclick="App.theme()">Light / Dark</button>
+    </div>
+    <small>This is a preview page, not the app itself. It starts with sample food, and nothing you change is saved. In the real app, photo recognition happens on the iPhone; here you can try it with a sample photo.</small>
+  </aside>
+  <div class="scaler" id="scaler">
+    <div class="device">
+      <div class="screen" id="screen">
+        <div class="island"></div>
+        <div class="status"><span id="clock">9:41</span><span class="r">
+          <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><path d="M8 2.2c2.3 0 4.4.9 6 2.4l1.2-1.3C13.3 1.5 10.8.4 8 .4S2.7 1.5.8 3.3L2 4.6c1.6-1.5 3.7-2.4 6-2.4zm0 3.6c1.4 0 2.6.5 3.6 1.4l1.2-1.3C11.5 4.7 9.8 4 8 4s-3.5.7-4.8 1.9l1.2 1.3c1-.9 2.2-1.4 3.6-1.4zm0 3.5c.5 0 1 .2 1.3.5L8 11.2 6.7 9.8c.3-.3.8-.5 1.3-.5z"/></svg>
+          <svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.5" fill="none" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="18" height="9" rx="2" fill="currentColor"/><path d="M25 4.5v4c.8-.3 1.3-1.1 1.3-2s-.5-1.7-1.3-2z" fill="currentColor" opacity=".4"/></svg>
+        </span></div>
+        <div class="app" id="app"></div>
+        <div class="homebar"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const D = {"foods": [{"key": "chicken", "kw": ["chicken"], "e": "🍗", "loc": "fridge", "d": 2}, {"key": "beef", "kw": ["beef", "steak", "ground beef"], "e": "🥩", "loc": "fridge", "d": 3}, {"key": "pork", "kw": ["pork", "sausage"], "e": "🥩", "loc": "fridge", "d": 3}, {"key": "bacon", "kw": ["bacon"], "e": "🥓", "loc": "fridge", "d": 7}, {"key": "salmon", "kw": ["salmon", "fish", "tilapia", "cod"], "e": "🐟", "loc": "fridge", "d": 2}, {"key": "shrimp", "kw": ["shrimp", "prawn"], "e": "🦐", "loc": "fridge", "d": 2}, {"key": "tofu", "kw": ["tofu"], "e": "🍱", "loc": "fridge", "d": 5}, {"key": "egg", "kw": ["egg", "eggs"], "e": "🥚", "loc": "fridge", "d": 21}, {"key": "milk", "kw": ["milk"], "e": "🥛", "loc": "fridge", "d": 7}, {"key": "butter", "kw": ["butter"], "e": "🧈", "loc": "fridge", "d": 30}, {"key": "cheese", "kw": ["cheese", "cheddar", "mozzarella", "parmesan", "feta"], "e": "🧀", "loc": "fridge", "d": 21}, {"key": "yogurt", "kw": ["yogurt", "yoghurt"], "e": "🥣", "loc": "fridge", "d": 10}, {"key": "cream", "kw": ["cream", "heavy cream", "half and half"], "e": "🥛", "loc": "fridge", "d": 7}, {"key": "sour cream", "kw": ["sour cream"], "e": "🥣", "loc": "fridge", "d": 14}, {"key": "spinach", "kw": ["spinach"], "e": "🥬", "loc": "fridge", "d": 5}, {"key": "lettuce", "kw": ["lettuce", "romaine", "salad", "greens", "kale"], "e": "🥬", "loc": "fridge", "d": 5}, {"key": "broccoli", "kw": ["broccoli"], "e": "🥦", "loc": "fridge", "d": 5}, {"key": "carrot", "kw": ["carrot"], "e": "🥕", "loc": "fridge", "d": 21}, {"key": "celery", "kw": ["celery"], "e": "🥬", "loc": "fridge", "d": 14}, {"key": "cabbage", "kw": ["cabbage"], "e": "🥬", "loc": "fridge", "d": 21}, {"key": "bell pepper", "kw": ["pepper", "peppers", "bell pepper"], "e": "🫑", "loc": "fridge", "d": 7}, {"key": "tomato", "kw": ["tomato", "tomatoes"], "e": "🍅", "loc": "fridge", "d": 5}, {"key": "canned tomatoes", "kw": ["canned tomato", "diced tomato", "crushed tomato", "tomato sauce", "marinara"], "e": "🥫", "loc": "pantry", "d": 365}, {"key": "onion", "kw": ["onion", "shallot", "scallion"], "e": "🧅", "loc": "pantry", "d": 30}, {"key": "garlic", "kw": ["garlic"], "e": "🧄", "loc": "pantry", "d": 30}, {"key": "potato", "kw": ["potato", "potatoes"], "e": "🥔", "loc": "pantry", "d": 30}, {"key": "sweet potato", "kw": ["sweet potato", "yam"], "e": "🍠", "loc": "pantry", "d": 21}, {"key": "eggplant", "kw": ["eggplant", "aubergine"], "e": "🍆", "loc": "fridge", "d": 5}, {"key": "mushroom", "kw": ["mushroom"], "e": "🍄", "loc": "fridge", "d": 5}, {"key": "zucchini", "kw": ["zucchini", "courgette", "squash"], "e": "🥒", "loc": "fridge", "d": 5}, {"key": "cucumber", "kw": ["cucumber"], "e": "🥒", "loc": "fridge", "d": 7}, {"key": "corn", "kw": ["corn"], "e": "🌽", "loc": "fridge", "d": 5}, {"key": "avocado", "kw": ["avocado"], "e": "🥑", "loc": "pantry", "d": 4}, {"key": "lemon", "kw": ["lemon", "lime"], "e": "🍋", "loc": "fridge", "d": 21}, {"key": "apple", "kw": ["apple"], "e": "🍎", "loc": "fridge", "d": 30}, {"key": "banana", "kw": ["banana"], "e": "🍌", "loc": "pantry", "d": 5}, {"key": "berries", "kw": ["berries", "berry", "strawberr", "blueberr", "raspberr"], "e": "🍓", "loc": "fridge", "d": 4}, {"key": "herbs", "kw": ["herbs", "cilantro", "parsley", "basil"], "e": "🌿", "loc": "fridge", "d": 5}, {"key": "ginger", "kw": ["ginger"], "e": "🫚", "loc": "fridge", "d": 21}, {"key": "rice", "kw": ["rice"], "e": "🍚", "loc": "pantry", "d": 365}, {"key": "pasta", "kw": ["pasta", "spaghetti", "penne", "noodle", "macaroni", "linguine"], "e": "🍝", "loc": "pantry", "d": 365}, {"key": "bread", "kw": ["bread", "sourdough", "baguette", "loaf", "bagel"], "e": "🍞", "loc": "pantry", "d": 5}, {"key": "tortilla", "kw": ["tortilla", "wrap"], "e": "🫓", "loc": "pantry", "d": 14}, {"key": "flour", "kw": ["flour"], "e": "🌾", "loc": "pantry", "d": 180}, {"key": "oats", "kw": ["oat", "oats", "oatmeal"], "e": "🥣", "loc": "pantry", "d": 365}, {"key": "beans", "kw": ["beans", "bean", "chickpea", "lentil"], "e": "🫘", "loc": "pantry", "d": 365}, {"key": "peanut butter", "kw": ["peanut butter", "peanut"], "e": "🥜", "loc": "pantry", "d": 90}, {"key": "frozen vegetables", "kw": ["frozen veg", "mixed veg", "peas", "frozen vegetables"], "e": "🥦", "loc": "freezer", "d": 180}, {"key": "broth", "kw": ["broth", "stock"], "e": "🍲", "loc": "pantry", "d": 365}, {"key": "coconut milk", "kw": ["coconut milk", "coconut"], "e": "🥥", "loc": "pantry", "d": 365}, {"key": "soy sauce", "kw": ["soy sauce", "soy"], "e": "🍶", "loc": "pantry", "d": 365}, {"key": "honey", "kw": ["honey"], "e": "🍯", "loc": "pantry", "d": 365}], "recipes": [{"id": "chicken-spinach-skillet", "name": "Creamy Chicken & Spinach Skillet", "emoji": "🍗", "min": 25, "veg": false, "df": false, "feat": true, "ing": [["chicken", "1 lb chicken thighs, sliced"], ["spinach", "3 big handfuls spinach"], ["cream", "½ cup cream"], ["garlic", "2 cloves garlic, minced"], ["cheese", "¼ cup grated parmesan"]], "steps": ["Season chicken with salt and pepper; brown in an oiled skillet over medium-high heat, 6–7 minutes.", "Add garlic and cook 30 seconds.", "Pour in cream and simmer until slightly thick, 3 minutes.", "Stir in spinach until wilted, then the cheese. Serve over rice or pasta."]}, {"id": "veggie-fried-rice", "name": "Veggie Fried Rice", "emoji": "🍚", "min": 20, "veg": true, "df": true, "feat": false, "ing": [["rice", "3 cups cooked rice (day-old is best)"], ["egg", "2 eggs"], ["frozen vegetables", "1 cup frozen mixed vegetables"], ["onion", "1 small onion, diced"], ["garlic", "2 cloves garlic"], ["soy sauce", "2 tbsp soy sauce"]], "steps": ["Fry onion and garlic in oil until soft.", "Add vegetables and cook 3 minutes.", "Push aside, scramble the eggs, then mix in.", "Add rice and soy sauce; fry until hot and slightly crisp."]}, {"id": "potato-frittata", "name": "Loaded Potato Frittata", "emoji": "🥔", "min": 25, "veg": true, "df": false, "feat": true, "ing": [["egg", "6 eggs"], ["potato", "2 potatoes, thinly sliced"], ["onion", "1 onion, sliced"], ["bell pepper", "1 bell pepper, diced"], ["cheese", "½ cup shredded cheese"]], "steps": ["Cook potatoes and onion in an oven-safe pan with oil until tender, 10 minutes.", "Add pepper for 2 minutes.", "Pour in beaten, seasoned eggs and top with cheese.", "Cook 3 minutes, then broil until set and golden, 3–4 minutes."]}, {"id": "spinach-tomato-pasta", "name": "Spinach & Tomato Pasta", "emoji": "🍝", "min": 20, "veg": true, "df": false, "feat": false, "ing": [["pasta", "8 oz pasta"], ["spinach", "2 handfuls spinach"], ["tomato", "2 cups cherry tomatoes"], ["garlic", "3 cloves garlic"], ["cheese", "Parmesan to serve"]], "steps": ["Boil pasta in salted water; save ½ cup pasta water.", "Sauté garlic and tomatoes in oil until blistered.", "Add spinach, pasta and a splash of pasta water; toss.", "Finish with cheese."]}, {"id": "black-bean-tacos", "name": "Black Bean Tacos", "emoji": "🌮", "min": 15, "veg": true, "df": true, "feat": false, "ing": [["tortilla", "6 small tortillas"], ["beans", "1 can black beans, drained"], ["onion", "½ onion, diced"], ["bell pepper", "1 bell pepper, sliced"], ["avocado", "1 avocado"], ["lemon", "1 lime or lemon"]], "steps": ["Cook onion and pepper in oil until soft.", "Add beans with a pinch of salt and cumin if you have it; warm through.", "Warm tortillas.", "Fill with beans, sliced avocado and a squeeze of citrus."]}, {"id": "sheet-pan-salmon", "name": "Sheet-Pan Salmon & Broccoli", "emoji": "🐟", "min": 25, "veg": false, "df": true, "feat": true, "ing": [["salmon", "2 salmon fillets"], ["broccoli", "1 head broccoli, in florets"], ["lemon", "1 lemon"], ["garlic", "2 cloves garlic, minced"]], "steps": ["Heat oven to 425°F / 220°C.", "Toss broccoli with oil, garlic, salt and pepper on a sheet pan; roast 8 minutes.", "Add seasoned salmon; roast 10–12 minutes more.", "Squeeze lemon over everything."]}, {"id": "black-bean-chili", "name": "Black Bean Chili", "emoji": "🍲", "min": 40, "veg": true, "df": true, "feat": false, "ing": [["beans", "2 cans beans"], ["canned tomatoes", "1 can diced tomatoes"], ["onion", "1 onion"], ["bell pepper", "1 bell pepper"], ["garlic", "3 cloves garlic"], ["broth", "1 cup broth"]], "steps": ["Sauté onion, pepper and garlic in oil.", "Add chili powder or spices you like; cook 1 minute.", "Add beans, tomatoes and broth; simmer 25 minutes.", "Season and serve with any toppings."]}, {"id": "banana-oat-pancakes", "name": "Banana Oat Pancakes", "emoji": "🥞", "min": 15, "veg": true, "df": false, "feat": false, "ing": [["banana", "2 ripe bananas"], ["oats", "1 cup oats"], ["egg", "2 eggs"], ["milk", "¼ cup milk"]], "steps": ["Blend or mash everything into a batter.", "Rest 5 minutes.", "Cook small pancakes in a buttered or oiled pan, 2 minutes per side."]}, {"id": "chicken-veggie-soup", "name": "Chicken Vegetable Soup", "emoji": "🥣", "min": 40, "veg": false, "df": true, "feat": false, "ing": [["chicken", "1 lb chicken"], ["carrot", "2 carrots"], ["celery", "2 celery stalks"], ["onion", "1 onion"], ["broth", "6 cups broth"], ["pasta", "1 cup small pasta"]], "steps": ["Sauté diced onion, carrot and celery in oil, 5 minutes.", "Add broth and chicken; simmer 20 minutes.", "Remove chicken, shred, and return.", "Add pasta and cook until tender."]}, {"id": "mushroom-omelette", "name": "Mushroom & Herb Omelette", "emoji": "🍳", "min": 10, "veg": true, "df": false, "feat": false, "ing": [["egg", "3 eggs"], ["mushroom", "1 cup sliced mushrooms"], ["cheese", "2 tbsp cheese"], ["herbs", "Chopped herbs"]], "steps": ["Cook mushrooms in a little oil until browned; set aside.", "Pour beaten eggs into the pan; swirl.", "When nearly set, add mushrooms, cheese and herbs; fold and serve."]}, {"id": "beef-broccoli", "name": "Beef & Broccoli", "emoji": "🥩", "min": 25, "veg": false, "df": true, "feat": false, "ing": [["beef", "1 lb thinly sliced beef"], ["broccoli", "1 head broccoli"], ["soy sauce", "3 tbsp soy sauce"], ["garlic", "2 cloves garlic"], ["ginger", "1 tsp grated ginger"], ["rice", "Rice to serve"]], "steps": ["Sear beef in a hot oiled pan in batches; set aside.", "Stir-fry broccoli 3 minutes with a splash of water.", "Add garlic, ginger, soy sauce and beef; toss 1 minute.", "Serve over rice."]}, {"id": "zucchini-corn-quesadillas", "name": "Zucchini & Corn Quesadillas", "emoji": "🫓", "min": 15, "veg": true, "df": false, "feat": false, "ing": [["tortilla", "4 tortillas"], ["zucchini", "1 zucchini, grated"], ["corn", "½ cup corn"], ["cheese", "1 cup shredded cheese"]], "steps": ["Cook zucchini and corn until dry, 4 minutes.", "Fill tortillas with veg and cheese; fold.", "Toast in a dry pan until golden on both sides."]}, {"id": "garlic-shrimp-noodles", "name": "Garlic Butter Shrimp Noodles", "emoji": "🦐", "min": 20, "veg": false, "df": false, "feat": false, "ing": [["shrimp", "1 lb shrimp"], ["pasta", "8 oz noodles"], ["garlic", "4 cloves garlic"], ["butter", "3 tbsp butter"], ["lemon", "½ lemon"]], "steps": ["Cook noodles.", "Melt butter, add garlic, then shrimp; cook until pink, 3 minutes.", "Toss in noodles and lemon juice; season."]}, {"id": "chickpea-curry", "name": "Coconut Chickpea Curry", "emoji": "🍛", "min": 30, "veg": true, "df": true, "feat": true, "ing": [["beans", "1 can chickpeas"], ["coconut milk", "1 can coconut milk"], ["onion", "1 onion"], ["garlic", "2 cloves garlic"], ["ginger", "1 tbsp ginger"], ["spinach", "2 handfuls spinach"], ["rice", "Rice to serve"]], "steps": ["Sauté onion, garlic and ginger.", "Add curry powder or spices; cook 1 minute.", "Add chickpeas and coconut milk; simmer 15 minutes.", "Stir in spinach and serve over rice."]}, {"id": "leftover-veg-pasta-bake", "name": "Leftover-Veg Pasta Bake", "emoji": "🧀", "min": 40, "veg": true, "df": false, "feat": true, "ing": [["pasta", "12 oz pasta"], ["canned tomatoes", "1 jar or can tomato sauce"], ["cheese", "1½ cups cheese"], ["zucchini", "1 zucchini"], ["bell pepper", "1 bell pepper"], ["onion", "1 onion"]], "steps": ["Heat oven to 400°F / 200°C; undercook pasta by 2 minutes.", "Sauté chopped vegetables until soft.", "Mix pasta, vegetables and sauce in a baking dish; top with cheese.", "Bake 20 minutes until bubbling."]}, {"id": "berry-parfait", "name": "Berry Yogurt Parfait", "emoji": "🍓", "min": 5, "veg": true, "df": false, "feat": false, "ing": [["yogurt", "1 cup yogurt"], ["berries", "1 cup berries"], ["oats", "¼ cup oats or granola"], ["honey", "Drizzle of honey"]], "steps": ["Layer yogurt, berries and oats in a glass.", "Drizzle with honey."]}, {"id": "peanut-noodles", "name": "Spicy Peanut Noodles", "emoji": "🥜", "min": 20, "veg": true, "df": true, "feat": false, "ing": [["pasta", "8 oz noodles"], ["peanut butter", "3 tbsp peanut butter"], ["soy sauce", "2 tbsp soy sauce"], ["carrot", "1 carrot, shredded"], ["cucumber", "½ cucumber"], ["garlic", "1 clove garlic"]], "steps": ["Cook noodles; rinse under cold water.", "Whisk peanut butter, soy sauce, garlic and hot water into a sauce; add chili if you like.", "Toss noodles with sauce, carrot and cucumber."]}, {"id": "clean-out-grain-bowl", "name": "Fridge Clean-Out Grain Bowl", "emoji": "🥗", "min": 15, "veg": true, "df": true, "feat": true, "ing": [["rice", "2 cups cooked rice"], ["beans", "1 can beans"], ["avocado", "1 avocado"], ["tomato", "1 tomato"], ["lettuce", "Greens"], ["lemon", "1 lemon"]], "steps": ["Warm rice and beans.", "Chop vegetables.", "Build bowls and dress with lemon, oil and salt."]}, {"id": "french-toast", "name": "French Toast", "emoji": "🍞", "min": 15, "veg": true, "df": false, "feat": false, "ing": [["bread", "4 slices bread (stale is fine)"], ["egg", "2 eggs"], ["milk", "½ cup milk"], ["butter", "Butter for the pan"]], "steps": ["Whisk eggs and milk with a pinch of cinnamon if you have it.", "Soak bread briefly.", "Cook in butter until golden, 2–3 minutes per side."]}, {"id": "sweet-potato-hash", "name": "Sweet Potato & Bean Hash", "emoji": "🍠", "min": 30, "veg": true, "df": true, "feat": false, "ing": [["sweet potato", "2 sweet potatoes, diced"], ["beans", "1 can black beans"], ["onion", "1 onion"], ["bell pepper", "1 bell pepper"], ["egg", "2–4 eggs"]], "steps": ["Cook sweet potato in oil, covered, 10 minutes.", "Add onion and pepper; cook until browned.", "Stir in beans; make wells and crack in eggs.", "Cover until eggs are set."]}, {"id": "chicken-wrap", "name": "Chicken Caesar-Style Wrap", "emoji": "🌯", "min": 15, "veg": false, "df": false, "feat": false, "ing": [["chicken", "2 cups cooked chicken"], ["tortilla", "2 large tortillas"], ["lettuce", "Romaine"], ["cheese", "Parmesan"], ["lemon", "½ lemon"]], "steps": ["Toss chicken and lettuce with lemon, oil, salt and cheese.", "Fill tortillas and roll tightly."]}, {"id": "apple-oatmeal", "name": "Apple Cinnamon Oatmeal", "emoji": "🍎", "min": 10, "veg": true, "df": false, "feat": false, "ing": [["oats", "1 cup oats"], ["apple", "1 apple, diced"], ["milk", "2 cups milk"], ["honey", "Honey to taste"]], "steps": ["Simmer oats, apple and milk, stirring, 5–7 minutes.", "Sweeten with honey and a pinch of cinnamon."]}], "subs": {"milk": [["Yogurt thinned with a little water", ["yogurt"]], ["Coconut milk", ["coconut milk"]], ["Water plus 1 tbsp butter per cup (for baking)", ["butter"]]], "cream": [["Milk plus 2 tbsp melted butter per cup", ["milk", "butter"]], ["Coconut milk", ["coconut milk"]], ["Yogurt stirred in off the heat", ["yogurt"]]], "sour cream": [["Plain yogurt (same amount)", ["yogurt"]]], "yogurt": [["Sour cream (same amount)", ["sour cream"]]], "butter": [["Cooking oil (use about ¾ the amount)", []]], "egg": [["½ mashed banana per egg (baking and pancakes)", ["banana"]], ["1 tbsp ground flax + 3 tbsp water per egg", []]], "cheese": [["Skip it and finish with extra salt, lemon and herbs", []]], "spinach": [["Chopped greens or kale", ["lettuce"]], ["Frozen vegetables", ["frozen vegetables"]], ["Chopped broccoli", ["broccoli"]]], "lettuce": [["Spinach", ["spinach"]], ["Shredded cabbage", ["cabbage"]]], "lemon": [["½ tsp vinegar per tbsp of juice", []]], "rice": [["Pasta or noodles", ["pasta"]], ["Bread on the side", ["bread"]]], "pasta": [["Rice", ["rice"]]], "tortilla": [["Bread, toasted", ["bread"]]], "bread": [["Tortillas", ["tortilla"]]], "chicken": [["Tofu", ["tofu"]], ["Beans or chickpeas", ["beans"]], ["Shrimp", ["shrimp"]]], "beef": [["Mushrooms, well browned", ["mushroom"]], ["Beans", ["beans"]], ["Pork", ["pork"]]], "salmon": [["Chicken (cook through)", ["chicken"]], ["Shrimp", ["shrimp"]]], "shrimp": [["Chicken, sliced thin", ["chicken"]], ["Tofu", ["tofu"]]], "broth": [["Water plus 1 tbsp soy sauce per cup", ["soy sauce"]], ["Water with extra salt and herbs", []]], "onion": [["Extra garlic", ["garlic"]], ["Celery for the base", ["celery"]]], "garlic": [["¼ tsp garlic powder per clove", []]], "bell pepper": [["Zucchini", ["zucchini"]], ["Carrot", ["carrot"]]], "zucchini": [["Bell pepper", ["bell pepper"]], ["Eggplant", ["eggplant"]]], "potato": [["Sweet potato", ["sweet potato"]]], "sweet potato": [["Potato", ["potato"]]], "tomato": [["Canned tomatoes", ["canned tomatoes"]]], "canned tomatoes": [["Fresh tomatoes, chopped and simmered", ["tomato"]]], "herbs": [["Dried herbs (⅓ the amount)", []]], "coconut milk": [["Cream", ["cream"]], ["Yogurt, stirred in off the heat", ["yogurt"]]], "soy sauce": [["Salt plus a splash of vinegar", []]], "honey": [["Sugar or maple syrup", []]], "ginger": [["¼ tsp ground ginger per tbsp fresh", []]], "berries": [["Banana slices", ["banana"]], ["Diced apple", ["apple"]]], "banana": [["Grated apple", ["apple"]]], "oats": [["Crumbled toast or flour (in pancakes)", ["flour"]]], "beans": [["Lentils or chickpeas, any canned bean works", []]], "corn": [["Frozen vegetables", ["frozen vegetables"]]], "frozen vegetables": [["Any chopped fresh vegetables", []]], "mushroom": [["Zucchini", ["zucchini"]]], "apple": [["Banana", ["banana"]], ["Berries", ["berries"]]], "carrot": [["Celery", ["celery"]], ["Bell pepper", ["bell pepper"]]], "broccoli": [["Frozen vegetables", ["frozen vegetables"]], ["Zucchini", ["zucchini"]], ["Spinach, added at the end", ["spinach"]]], "celery": [["Carrot", ["carrot"]], ["Onion", ["onion"]]], "cucumber": [["Shredded carrot", ["carrot"]], ["Shredded cabbage", ["cabbage"]]], "peanut butter": [["Any nut or seed butter", []]], "avocado": [["A spoon of yogurt or sour cream", ["yogurt"]], ["Skip it and add extra lemon", []]]}};
+(function(){
+"use strict";
+const DAY = 86400000;
+const ICON = {
+  fridge:'<rect x="5" y="2.5" width="14" height="19" rx="2.5"/><path d="M5 10h14M8.5 5.5v2M8.5 13v3"/>',
+  cart:'<path d="M2.5 3.5h2.6l2.2 11h10.4l2.1-7.8H6.2"/><circle cx="9" cy="19" r="1.4"/><circle cx="17" cy="19" r="1.4"/>',
+  fork:'<path d="M7 2.5v6.5a2 2 0 0 0 2 2v10.5M11 2.5V9M7 2.5"/><path d="M9 2.5v6"/><path d="M17 21.5V2.5c-2.2 1.2-3.5 3.8-3.5 7v4h3.5"/>',
+  people:'<circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.5 2.7-5.8 6-5.8s6 2.3 6 5.8"/><circle cx="17" cy="9" r="2.4"/><path d="M16.5 14.4c2.7.2 4.5 2.2 4.5 5.1"/>',
+  gear:'<circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v2.6M12 18.9v2.6M21.5 12h-2.6M5.1 12H2.5M18.7 5.3l-1.8 1.8M7.1 16.9l-1.8 1.8M18.7 18.7l-1.8-1.8M7.1 7.1 5.3 5.3"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  pluscirc:'<circle cx="12" cy="12" r="9.5" fill="currentColor" stroke="none"/><path d="M12 7.5v9M7.5 12h9" stroke="var(--cell)" stroke-width="2.2"/>',
+  search:'<circle cx="10.5" cy="10.5" r="6"/><path d="m15 15 5 5"/>',
+  back:'<path d="m15 4-8 8 8 8"/>',
+  chev:'<path d="m9 5 7 7-7 7"/>',
+  checkfill:'<circle cx="12" cy="12" r="9.5" fill="currentColor" stroke="none"/><path d="m7.5 12.3 3 3 6-6.3" stroke="var(--cell)" stroke-width="2.2"/>',
+  circle:'<circle cx="12" cy="12" r="9.5"/>',
+  dashed:'<circle cx="12" cy="12" r="9.5" stroke-dasharray="3 3"/>',
+  clock:'<circle cx="11" cy="12" r="8"/><path d="M11 8v4l2.5 2"/><path d="M20 4v5M20 11.5v.5"/>',
+  camera:'<path d="M3 8V5.5A2.5 2.5 0 0 1 5.5 3H8M16 3h2.5A2.5 2.5 0 0 1 21 5.5V8M21 16v2.5a2.5 2.5 0 0 1-2.5 2.5H16M8 21H5.5A2.5 2.5 0 0 1 3 18.5V16"/><rect x="7" y="8.5" width="10" height="7.5" rx="1.5"/><circle cx="12" cy="12.2" r="2"/>',
+  cam:'<path d="M3 8.5A2 2 0 0 1 5 6.5h2.5L9 4.5h6l1.5 2H19a2 2 0 0 1 2 2V18a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="3.5"/>',
+  photo:'<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.6"/><path d="m4 17 5-5 4 4 2.5-2.5L20 18"/>',
+  swap:'<path d="M4 8h13l-3-3M20 16H7l3 3"/>',
+  cartplus:'<path d="M2.5 3.5h2.6l2.2 11h10.4l2.1-7.8H6.2"/><circle cx="9" cy="19" r="1.4"/><circle cx="17" cy="19" r="1.4"/><path d="M13 8.5v4M11 10.5h4"/>',
+  share:'<path d="M12 3v12M8 7l4-4 4 4"/><path d="M6.5 10.5H5.5a1.5 1.5 0 0 0-1.5 1.5v7.5A1.5 1.5 0 0 0 5.5 21h13a1.5 1.5 0 0 0 1.5-1.5V12a1.5 1.5 0 0 0-1.5-1.5h-1"/>',
+  trash:'<path d="M4 6.5h16M9.5 6.5V4h5v2.5M6 6.5l1 14h10l1-14M10 10.5v6M14 10.5v6"/>',
+  check:'<path d="m5 12.5 4.5 4.5L19 7.5"/>',
+  leaf:'<path d="M5 19c0-8 5-13.5 14-14-.5 9.5-6 14-14 14z"/><path d="M5 19l7-7"/>',
+  tray:'<path d="M3 13.5 5.5 5h13l2.5 8.5V19a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M3 13.5h5a4 4 0 0 0 8 0h5"/><path d="M12 6v6M9.5 9.5 12 12l2.5-2.5"/>',
+  pencil:'<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/>',
+  book:'<path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5z"/><path d="M5 19.5A1.5 1.5 0 0 0 6.5 21H19v-3"/>',
+  bell:'<path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/><circle cx="18" cy="5.5" r="2.5" fill="currentColor"/>',
+  seal:'<path d="M12 2.5l2.3 1.6 2.8-.2.9 2.6 2.3 1.6-.8 2.7.8 2.7-2.3 1.6-.9 2.6-2.8-.2L12 21.5l-2.3-1.6-2.8.2-.9-2.6L3.7 15.9l.8-2.7-.8-2.7 2.3-1.6.9-2.6 2.8.2z"/><path d="m8.5 12 2.5 2.5 4.5-5"/>'
+};
+const ic = (n, cls='', style='') => `<svg class="i ${cls}" ${style?`style="${style}"`:''} viewBox="0 0 24 24" aria-hidden="true">${ICON[n]}</svg>`;
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const today = () => { const d = new Date(); d.setHours(0,0,0,0); return d; };
+const inDays = n => new Date(today().getTime() + n*DAY);
+const uid = () => Math.random().toString(36).slice(2, 10);
+
+// ---------- catalog (ported from FoodCatalog.swift) ----------
+function entry(text){ const n = text.toLowerCase(); let best=null, len=0;
+  for (const e of D.foods) for (const k of e.kw) if (n.includes(k) && k.length > len){ best=e; len=k.length; }
+  return best; }
+const entryForKey = k => D.foods.find(e => e.key === k);
+const keyOf = t => (entry(t)||{}).key || t.toLowerCase().trim();
+const emojiOf = t => (entry(t)||{}).e || '🍽️';
+const cap = s => s.replace(/\b\w/g, c => c.toUpperCase());
+const displayName = k => cap(k);
+const locTitle = {fridge:'Fridge', freezer:'Freezer', pantry:'Pantry'};
+const suggestedLoc = t => (entry(t)||{}).loc || 'fridge';
+function suggestedExp(t, loc){ let d = (entry(t)||{}).d || 7; if (loc === 'freezer') d = Math.max(d, 90); return inDays(d); }
+const daysLeft = it => Math.round((new Date(it.exp).setHours(0,0,0,0) - today()) / DAY);
+function badge(d){
+  const t = d < 0 ? 'Expired' : d === 0 ? 'Today' : d === 1 ? '1 day' : d <= 30 ? d + ' days' : d <= 89 ? Math.floor(d/7) + ' wks' : Math.floor(d/30) + ' mo';
+  const c = d < 1 ? 'c-red' : d <= 3 ? 'c-orange' : 'c-green';
+  return `<span class="badge ${c}">${t}</span>`;
+}
+
+// ---------- engine (ported from Substitutions.swift / RecipeEngine.swift) ----------
+function subOptions(key, have){
+  return (D.subs[key]||[]).map(([text, needs]) => ({text, needs, available: needs.every(n => have.has(n))}))
+    .sort((a,b) => (b.available?1:0) - (a.available?1:0));
+}
+const bestSub = (k, have) => subOptions(k, have).find(o => o.available);
+function suggestions(have, expiring, prefs, counts){
+  return D.recipes.filter(r => (!prefs.veg || r.veg) && (!prefs.df || r.df) && (!prefs.quick || r.min <= 30))
+    .map(r => {
+      const keys = [...new Set(r.ing.map(i => i[0]))];
+      const hk = keys.filter(k => have.has(k)), miss = keys.filter(k => !have.has(k));
+      const sw = miss.filter(k => bestSub(k, have)), ex = hk.filter(k => expiring.has(k));
+      const cov = (hk.length + sw.length) / Math.max(keys.length, 1);
+      const score = cov*100 + ex.length*20 + Math.min(counts[r.id]||0, 5)*3 - (miss.length - sw.length)*4;
+      return {r, keys, have:hk, missing:miss, swappable:sw, expiring:ex, score, canMake: miss.length === sw.length};
+    }).sort((a,b) => b.score - a.score);
+}
+
+// ---------- state ----------
+let S;
+function sample(){
+  return [['Spinach','1 bag','fridge',0],['Chicken thighs','1.2 lb','fridge',1],['Cherry tomatoes','1 pint','fridge',2],['Eggs','8','fridge',14],
+    ['Parmesan','1 wedge','fridge',21],['Milk','Half gallon','fridge',5],['Bell pepper','2','fridge',3],['Onions','3','pantry',30],['Garlic','1 head','pantry',30],
+    ['Potatoes','2 lb','pantry',25],['Spaghetti','1 box','pantry',300],['Rice','2 lb','pantry',300],['Black beans','2 cans','pantry',300],['Frozen peas','1 bag','freezer',150]]
+    .map(([name,qty,loc,d]) => ({id:uid(), name, qty, loc, exp:inDays(d).getTime()}));
+}
+function fresh(onboard){
+  return { tab:'kitchen', stacks:{kitchen:[],shop:[],cook:[],recipes:[],settings:[]}, items:sample(),
+    groc:['Greek yogurt','Lemons','Tortillas'].map(n => ({id:uid(), name:n, done:false})),
+    cooked:{}, mine:[], prefs:{veg:false, df:false, quick:false}, used:0, tossed:0, rem:true, days:1,
+    filter:'all', search:'', onboard, ob:0, sheet:null, overlay:null, pushed:false, scroll:{} };
+}
+S = fresh(true);
+const kitchenKeys = () => new Set(S.items.map(i => keyOf(i.name)));
+
+// ---------- rendering helpers ----------
+function navbar({title, large=true, back=null, right=''}){
+  return `<div class="navbar ${large?'':'inline'}"><div class="navrow">
+    ${back ? `<button class="navbtn back" onclick="App.pop()">${ic('back')}<span>${esc(back)}</span></button>` : '<span></span>'}
+    <div class="ttl">${esc(title)}</div><div class="navright">${right}</div></div></div>`;
+}
+const section = (body, h='', f='', inset) => `<div class="sec-wrap">${h?`<div class="sec-h">${h}</div>`:''}<div class="sec"><div class="group" ${inset?`style="--inset:${inset}px"`:''}>${body}</div>${f?`<div class="sec-f" style="margin:7px 0 0">${f}</div>`:''}</div></div>`;
+const toggle = (on, fn, dis) => `<button class="toggle ${on?'on':''}" role="switch" aria-checked="${on}" ${dis?'disabled':''} onclick="${fn}"></button>`;
+
+// ---------- tabs ----------
+function kitchenPage(){
+  const f = S.filter, q = S.search.toLowerCase();
+  const list = [...S.items].sort((a,b) => a.exp - b.exp).filter(i => (f==='all' || i.loc===f) && (!q || i.name.toLowerCase().includes(q)));
+  const soon = list.filter(i => daysLeft(i) <= 3), later = list.filter(i => daysLeft(i) > 3);
+  const row = i => `<div class="swipe" data-id="${i.id}">
+      <div class="acts"><button class="a-green" onclick="App.removeItem('${i.id}',true)">${ic('check')}Used</button><button class="a-red" onclick="App.removeItem('${i.id}',false)">${ic('trash')}Tossed</button></div>
+      <div class="front cell tappable" onclick="App.tapRow(event,'editItem','${i.id}')">
+        <span class="emo">${emojiOf(i.name)}</span>
+        <span class="grow"><span class="t m">${esc(i.name)}</span><span class="sub">${esc([i.qty, locTitle[i.loc]].filter(Boolean).join(' · '))}</span></span>
+        ${badge(daysLeft(i))}
+      </div></div>`;
+  let h = navbar({title:'My Kitchen', right:`<button class="navbtn" aria-label="Add item" onclick="App.editItem()">${ic('plus')}</button>`});
+  h += `<div class="scroll"><div class="large">My Kitchen</div>
+    <label class="search">${ic('search')}<input id="ksearch" type="search" placeholder="Search your kitchen" value="${esc(S.search)}" oninput="App.setSearch(this.value)"></label>
+    <div class="seg">${[['all',`All (${S.items.length})`],['fridge','Fridge'],['freezer','Freezer'],['pantry','Pantry']].map(([k,t]) => `<button class="${f===k?'on':''}" onclick="App.setFilter('${k}')">${t}</button>`).join('')}</div>`;
+  if (!S.items.length) h += section(`<div class="empty">${ic('fridge')}<h3>Your kitchen is empty</h3><p>Add what's in your fridge, freezer and pantry, or check off a shopping trip to stock it automatically.</p><button class="pbtn" onclick="App.editItem()">Add an item</button><button class="lbtn" onclick="App.loadSample()">Try with sample items</button></div>`);
+  if (soon.length) h += section(soon.map(row).join(''), `${ic('clock')} Use soon`, '', 68);
+  if (later.length) h += section(later.map(row).join(''), 'Everything else', '', 68);
+  if (S.items.length && !list.length) h += `<p class="sec-f" style="text-align:center">No results for “${esc(S.search)}”</p>`;
+  if (S.used + S.tossed > 0) h += section(`<div class="cell" style="color:var(--label2);font-size:13px">${ic('leaf')} ${S.used} used in time · ${S.tossed} tossed</div>`);
+  return h + '</div>';
+}
+
+function shopPage(){
+  const kk = kitchenKeys(), toBuy = S.groc.filter(g => !g.done), cart = S.groc.filter(g => g.done);
+  const row = g => `<div class="swipe" data-id="${g.id}"><div class="acts"><button class="a-red" onclick="App.delGroc('${g.id}')">${ic('trash')}Delete</button></div>
+    <div class="front cell tappable" onclick="App.tapRow(event,'toggleGroc','${g.id}')">
+      ${ic(g.done ? 'checkfill' : 'circle', 'check ' + (g.done ? 'on' : ''))}<span>${emojiOf(g.name)}</span>
+      <span class="grow"><span class="t ${g.done?'strike':''}">${esc(g.name)}</span>${!g.done && kk.has(keyOf(g.name)) ? '<span class="sub" style="color:var(--orange)">You may already have this at home</span>' : ''}</span>
+    </div></div>`;
+  let h = navbar({title:'Shopping List', right: S.groc.length ? `<button class="navbtn" aria-label="Share list" onclick="App.shareList()">${ic('share')}</button>` : ''});
+  h += `<div class="scroll"><div class="large">Shopping List</div>`;
+  h += section(`<div class="cell addrow"><input id="addg" placeholder="Add to list" enterkeyhint="done" onkeydown="if(event.key==='Enter')App.addGroc()" oninput="document.getElementById('addgb').disabled=!this.value.trim()"><button id="addgb" class="addbtn" aria-label="Add" disabled onclick="App.addGroc()">${ic('pluscirc')}</button></div>`);
+  if (!S.groc.length) h += section(`<div class="empty">${ic('cart')}<h3>Your list is empty</h3><p>Add items here, or add missing ingredients from any recipe.</p></div>`);
+  if (toBuy.length) h += section(toBuy.map(row).join(''), 'To buy', '', 76);
+  if (cart.length) h += section(cart.map(row).join('') + `<button class="cell btn" onclick="App.stock()">${ic('tray')} Put ${cart.length} item${cart.length===1?'':'s'} away in my kitchen</button>`,
+    'In the cart', 'Checked items move to your kitchen inventory with a suggested storage spot and expiration date.', 76);
+  return h + '</div>';
+}
+
+function cookPage(){
+  const have = kitchenKeys(), exp = new Set(S.items.filter(i => daysLeft(i) <= 3).map(i => keyOf(i.name)));
+  const list = suggestions(have, exp, S.prefs, S.cooked);
+  let h = navbar({title:'What to Cook'}) + `<div class="scroll"><div class="large">What to Cook</div>`;
+  h += section(`<button class="cell tappable snap" onclick="App.openScan()"><span class="ic">${ic('camera')}</span><span class="grow"><span class="t s">Snap your ingredients</span><span class="sub" style="font-size:15px">Take a photo and get recipe ideas</span></span></button>`);
+  h += `<div class="fchips">${[['veg','Vegetarian'],['df','Dairy-free'],['quick','30 min or less']].map(([k,t]) => `<button class="fchip ${S.prefs[k]?'on':''}" aria-pressed="${S.prefs[k]}" onclick="App.pref('${k}')">${t}</button>`).join('')}</div>`;
+  h += section(list.length ? list.map(sugRow).join('') : '<div class="cell" style="color:var(--label2)">No recipes match those filters yet.</div>',
+    S.items.length ? 'Best matches for your kitchen' : 'Recipes', S.items.length ? '' : 'Add items to your kitchen and these will be ranked by what you already have.', 76);
+  return h + '</div>';
+}
+function sugRow(s){
+  const chips = (s.missing.length === 0 ? '<span class="chip c-green">Nothing to buy</span>' : s.canMake ? '<span class="chip c-green">Make it with swaps</span>' : '')
+    + (s.expiring.length ? `<span class="chip c-orange">Uses ${s.expiring.length} expiring</span>` : '');
+  return `<button class="cell tappable" onclick="App.push('recipe','${s.r.id}')"><span class="emo lg">${s.r.emoji}</span>
+    <span class="grow"><span class="t s">${esc(s.r.name)}</span><span class="sub">${s.r.min} min · have ${s.have.length} of ${s.keys.length}</span>${chips?`<span class="chips">${chips}</span>`:''}</span>${ic('chev','chev')}</button>`;
+}
+
+function recipePage(id, backTitle){
+  const r = D.recipes.find(x => x.id === id), have = kitchenKeys();
+  const keys = r.ing.map(i => i[0]), missing = [...new Set(keys.filter(k => !have.has(k)))];
+  let h = navbar({title:r.name, large:false, back:backTitle, right:`<button class="navbtn" aria-label="Share" onclick="App.shareRecipe('${r.id}')">${ic('share')}</button>`});
+  h += `<div class="scroll" style="padding-top:12px">`;
+  h += section(`<div class="hero"><div class="big">${r.emoji}</div><h2>${esc(r.name)}</h2><div class="chips" style="margin-bottom:12px"><span class="chip c-accent">${r.min} min</span>${r.veg?'<span class="chip c-green">Vegetarian</span>':''}${r.df?'<span class="chip c-blue">Dairy-free</span>':''}</div></div>`);
+  const ing = r.ing.map(([k, text]) => {
+    const own = have.has(k);
+    const swaps = own ? '' : subOptions(k, have).map(o => `<div class="swap">${ic('swap')}<span style="color:${o.available?'var(--label)':'var(--label2)'}">Swap: ${esc(o.text)}</span>${o.available && o.needs.length ? '<span class="chip c-green">In your kitchen</span>' : ''}</div>`).join('');
+    return `<div class="cell ing"><div class="top">${ic(own?'checkfill':'dashed','',own?'color:var(--green)':'color:var(--orange)')}<span class="grow" style="color:var(--label)">${esc(text)}</span>${own?'':'<span style="font-size:12px;color:var(--orange)">Missing</span>'}</div>${swaps}</div>`;
+  }).join('');
+  h += section(ing
+    + (missing.length ? `<button class="cell btn" onclick="App.addMissing('${r.id}')">${ic('cartplus')} Add ${missing.length} missing to shopping list</button>` : ''), 'Ingredients', '', 44);
+  h += section(r.steps.map((s, i) => `<div class="cell step"><span class="num">${i+1}</span><p>${esc(s)}</p></div>`).join(''), 'Steps', '', 54);
+  h += `<div class="sec"><button class="pbtn block" onclick="App.cookedPrompt('${r.id}')">${ic('seal')} I cooked this</button><div class="sec-f" style="margin:8px 0 0">LeftoverIQ learns what you like to cook and ranks those recipes higher.</div></div>`;
+  return h + '</div>';
+}
+
+function recipesPage(){
+  const feat = D.recipes.filter(r => r.feat);
+  let h = navbar({title:'Recipes', right:`<button class="navbtn" aria-label="New recipe" onclick="App.newRecipe()">${ic('plus')}</button>`}) + `<div class="scroll"><div class="large">Recipes</div>`;
+  h += section(feat.map(r => `<button class="cell tappable" onclick="App.push('recipe','${r.id}')"><span style="font-size:30px">${r.emoji}</span><span class="grow"><span class="t s">${esc(r.name)}</span><span class="sub">${r.min} min · ${r.ing.length} ingredients</span></span>${ic('chev','chev')}</button>`).join(''),
+    'Kitchen picks', 'Favorites built for turning everyday leftovers into dinner.', 58);
+  h += section((S.mine.length ? '' : `<button class="cell btn" onclick="App.newRecipe()">${ic('pencil')} Write your first recipe</button>`)
+    + S.mine.map(m => `<button class="cell tappable" onclick="App.push('mine','${m.id}')"><span style="color:var(--accent)">${ic('book')}</span><span class="grow">${esc(m.title)}</span>${ic('chev','chev')}</button>`).join(''),
+    'My recipes', 'Share your recipes with friends and family by message, email or AirDrop.', 50);
+  return h + '</div>';
+}
+function minePage(id){
+  const m = S.mine.find(x => x.id === id);
+  if (!m) return navbar({title:'', large:false, back:'Recipes'}) + '<div class="scroll"></div>';
+  return navbar({title:m.title, back:'Recipes', right:`<button class="navbtn" aria-label="Share" onclick="App.shareMine('${m.id}')">${ic('share')}</button>`})
+    + `<div class="scroll"><div class="large">${esc(m.title)}</div>` + section(`<div class="cell" style="white-space:pre-wrap">${esc(m.ing || ' ')}</div>`, 'Ingredients') + section(`<div class="cell" style="white-space:pre-wrap">${esc(m.steps || ' ')}</div>`, 'Steps') + '</div>';
+}
+function settingsPage(){
+  const n = Object.values(S.cooked).reduce((a,b) => a+b, 0);
+  let h = navbar({title:'Settings'}) + `<div class="scroll"><div class="large">Settings</div>`;
+  h += section(`<div class="cell"><span class="grow">Expiration reminders</span>${toggle(S.rem,'App.setRem()')}</div>
+    <div class="cell" style="${S.rem?'':'opacity:.45'}"><span class="grow">Remind me</span><select ${S.rem?'':'disabled'} onchange="App.setDays(this.value)">${[['0','On the day'],['1','1 day before'],['2','2 days before'],['3','3 days before']].map(([v,t]) => `<option value="${v}" ${+v===S.days?'selected':''}>${t}</option>`).join('')}</select></div>`,
+    'Reminders', 'Reminders arrive at 9 AM. Expiration dates are estimates; always check the package.');
+  h += section([['veg','Vegetarian'],['df','Dairy-free'],['quick','Quick meals (30 min or less)']].map(([k,t]) => `<div class="cell"><span class="grow">${t}</span>${toggle(S.prefs[k],`App.pref('${k}')`)}</div>`).join(''), 'Food preferences');
+  h += section(`<div class="cell"><span class="grow">Items used in time</span><span class="val">${S.used}</span></div><div class="cell"><span class="grow">Items tossed</span><span class="val">${S.tossed}</span></div><div class="cell"><span class="grow">Meals cooked</span><span class="val">${n}</span></div>`, 'Your impact');
+  h += section(`<button class="cell btn" onclick="App.loadSample()">Load sample kitchen</button><button class="cell btn danger" onclick="App.confirmDelete()">Delete all my data</button>`, 'Data');
+  h += section(`<button class="cell btn" onclick="App.alert('Privacy policy','Opens the privacy policy web page.')">Privacy policy</button><button class="cell btn" onclick="App.alert('Help & support','Opens the support web page.')">Help &amp; support</button><div class="cell"><span class="grow">Version</span><span class="val">1.0 (1)</span></div>`,
+    'About', 'Your kitchen data is stored only on this device. Photos are analyzed on-device and are not uploaded.');
+  return h + '</div>';
+}
+
+// ---------- sheets ----------
+function itemSheet(){
+  const e = S.sheet.data;
+  return `<div class="navbar"><div class="navrow"><button class="navbtn" onclick="App.closeSheet()">Cancel</button><div class="ttl">${e.id?'Edit item':'Add item'}</div>
+    <button class="navbtn bold" id="saveItem" ${e.name.trim()?'':'disabled'} onclick="App.saveItem()">Save</button></div></div>
+    <div class="scroll" style="padding-top:20px">
+    ${section(`<div class="cell"><input class="txt" id="fname" placeholder="Item name, e.g. Spinach" value="${esc(e.name)}" autocapitalize="words" oninput="App.itemName(this.value)"></div><div class="cell"><input class="txt" placeholder="Quantity (optional)" value="${esc(e.qty)}" oninput="App.sheetSet('qty',this.value)"></div>`)}
+    ${section(`<div class="cell"><span class="grow">Stored in</span><select id="floc" onchange="App.itemLoc(this.value)">${Object.entries(locTitle).map(([k,t]) => `<option value="${k}" ${e.loc===k?'selected':''}>${t}</option>`).join('')}</select></div>
+      <div class="cell"><span class="grow">Expected to expire</span><input type="date" id="fexp" value="${new Date(e.exp - new Date(e.exp).getTimezoneOffset()*60000).toISOString().slice(0,10)}" onchange="App.itemExp(this.value)"></div>`, '',
+      'LeftoverIQ suggests a typical date based on the item. Always check the package and use your judgment.')}
+    ${e.id ? section(`<button class="cell btn danger" style="justify-content:center" onclick="App.removeItem('${e.id}',null)">Remove from kitchen</button>`) : ''}
+    </div>`;
+}
+function recipeSheet(){
+  const d = S.sheet.data;
+  return `<div class="navbar"><div class="navrow"><button class="navbtn" onclick="App.closeSheet()">Cancel</button><div class="ttl">New recipe</div>
+    <button class="navbtn bold" id="saveRec" ${d.title.trim()?'':'disabled'} onclick="App.saveRecipe()">Save</button></div></div>
+    <div class="scroll" style="padding-top:20px">
+    ${section(`<div class="cell"><input class="txt" placeholder="e.g. Grandma's Sunday soup" value="${esc(d.title)}" oninput="App.recTitle(this.value)"></div>`, 'Name')}
+    ${section(`<div class="cell"><textarea oninput="App.sheetSet('ing',this.value)">${esc(d.ing)}</textarea></div>`, 'Ingredients')}
+    ${section(`<div class="cell"><textarea style="min-height:160px" oninput="App.sheetSet('steps',this.value)">${esc(d.steps)}</textarea></div>`, 'Steps')}
+    </div>`;
+}
+function scanSheet(){
+  const sc = S.scan;
+  let photo;
+  if (sc.img === 'sample') photo = `<div class="photo"><div class="scene" role="img" aria-label="Sample photo of eggs, potatoes, onion, pepper and cheese on a counter">🥚🥚🥔<br>🧅🫑🥔🧀</div></div>`;
+  else if (sc.img) photo = `<div class="photo"><img src="${sc.img}" alt="Your photo"></div>`;
+  else photo = `<div class="placeholder">${ic('camera')}<span>Photograph your ingredients on the counter or inside the fridge.</span></div>`;
+  let h = `<div class="navbar"><div class="navrow"><span></span><div class="ttl">Snap Ingredients</div><button class="navbtn bold" onclick="App.closeSheet()">Done</button></div></div><div class="scroll" style="padding-top:16px">`;
+  h += `<div class="sec">${photo}<div class="btnrow">
+    <label class="bbtn fill">${ic('cam')}Take photo<input type="file" accept="image/*" capture="environment" hidden onchange="App.photo(this)"></label>
+    <label class="bbtn">${ic('photo')}Choose photo<input type="file" accept="image/*" hidden onchange="App.photo(this)"></label></div>
+    <div style="text-align:center;margin-top:10px"><button class="lbtn" onclick="App.samplePhoto()">Try a sample photo</button></div></div>`;
+  if (sc.busy) h += section(`<div class="cell"><span class="spin"></span>Finding ingredients…</div>`);
+  if (!sc.busy && (sc.found.length || sc.img)) {
+    const body = (sc.img && sc.img !== 'sample' && !sc.found.length ? `<div class="cell" style="color:var(--label2);font-size:15px">In this preview, photo recognition only works with the sample photo. In the iPhone app your photo is recognized on the phone. Add what's in it by name below.</div>` : '')
+      + sc.found.map(k => `<div class="cell"><span style="font-size:20px">${(entryForKey(k)||{}).e || '🍽️'}</span><span class="grow">${esc(displayName(k))}</span>${toggle(sc.selected.includes(k), `App.scanToggle('${k}')`)}</div>`).join('');
+    h += section(body, 'Ingredients', "Recognition happens on your phone. Turn off anything that's wrong.", 48);
+  }
+  h += section(`<div class="cell addrow"><input id="scanadd" placeholder="e.g. zucchini" onkeydown="if(event.key==='Enter')App.scanAdd()"><button class="lbtn" onclick="App.scanAdd()">Add</button></div>`, 'Add by name');
+  const dis = sc.selected.length ? '' : 'style="opacity:.4;pointer-events:none"';
+  h += section(`<button class="cell btn" ${dis} onclick="App.scanRecipes()">${ic('fork')}<span class="grow">Show recipes</span>${ic('chev','chev')}</button><button class="cell btn" ${dis} onclick="App.scanToKitchen()">${ic('fridge')} Add these to my kitchen</button>`);
+  return h + '</div>';
+}
+
+// ---------- onboarding ----------
+const OB = [['fridge','Know what you have','Keep track of your fridge, freezer and pantry right from your phone. No special equipment.'],
+  ['bell','Use it before you lose it','Get a reminder before food reaches its expected expiration date.'],
+  ['camera','Know what to cook','Snap your ingredients or let LeftoverIQ pick recipes from what you own, with swaps for anything missing.']];
+function onboarding(){
+  const [i, t, p] = OB[S.ob];
+  return `<div class="ob"><div class="pg" key="${S.ob}">${ic(i)}<h2>${t}</h2><p>${p}</p></div>
+    <div class="dots">${OB.map((_, k) => `<span class="${k===S.ob?'on':''}"></span>`).join('')}</div>
+    <button class="pbtn block" onclick="App.obNext()">${S.ob < 2 ? 'Next' : 'Get started'}</button>
+    <button class="skip" onclick="App.obDone()">Skip</button></div>`;
+}
+
+// ---------- render ----------
+const TABS = [['kitchen','Kitchen','fridge'],['shop','Shop','cart'],['cook','Cook','fork'],['recipes','Recipes','people'],['settings','Settings','gear']];
+const ROOT = {kitchen:kitchenPage, shop:shopPage, cook:cookPage, recipes:recipesPage, settings:settingsPage};
+const BACK = {kitchen:'My Kitchen', shop:'Shopping List', cook:'What to Cook', recipes:'Recipes', settings:'Settings'};
+function pageHTML(){
+  const st = S.stacks[S.tab], top = st[st.length-1];
+  if (!top) return ROOT[S.tab]();
+  if (top.type === 'recipe') return recipePage(top.id, 'Back');
+  if (top.type === 'mine') return minePage(top.id);
+  return ROOT[S.tab]();
+}
+function pageKey(){ const st = S.stacks[S.tab]; return S.tab + ':' + st.map(p => p.type + p.id).join('/'); }
+function render(){
+  const app = document.getElementById('app');
+  const old = app.querySelector('.pages .scroll'); if (old) S.scroll[S.lastKey] = old.scrollTop;
+  const sheetScroll = app.querySelector('.sheet .scroll'); const sTop = sheetScroll ? sheetScroll.scrollTop : 0;
+  const active = document.activeElement, activeId = active && active.id, selStart = active && active.selectionStart;
+  const key = pageKey();
+  let h = `<div class="pages"><div class="page ${S.pushed?'push':''}">${pageHTML()}</div></div>`;
+  h += `<nav class="tabbar">${TABS.map(([k,t,i]) => `<button class="tab ${S.tab===k?'on':''}" aria-label="${t}" aria-current="${S.tab===k}" onclick="App.tab('${k}')">${ic(i)}<span>${t}</span></button>`).join('')}</nav>`;
+  if (S.sheet) {
+    const inner = S.sheet.type === 'item' ? itemSheet() : S.sheet.type === 'recipe' ? recipeSheet() : (S.scan.page === 'results' ? scanResultsWrap() : scanSheet());
+    h += `${S.sheet.anim?'<div class="dim"></div>':'<div class="dim" style="animation:none"></div>'}<div class="sheet" style="${S.sheet.anim?'':'animation:none'}">${inner}</div>`;
+  }
+  if (S.onboard) h += onboarding();
+  if (S.overlay) h += S.overlay;
+  app.innerHTML = h;
+  S.pushed = false; if (S.sheet) S.sheet.anim = false;
+  const sc = app.querySelector('.pages .scroll');
+  if (sc) { sc.scrollTop = key === S.lastKey ? (S.scroll[key]||0) : (S.scroll[key]||0); wireScroll(sc); }
+  const ss = app.querySelector('.sheet .scroll'); if (ss) ss.scrollTop = sTop;
+  S.lastKey = key;
+  if (activeId) { const el = document.getElementById(activeId); if (el) { el.focus(); try { el.setSelectionRange(selStart, selStart); } catch(e){} } }
+  wireSwipes();
+}
+function scanResultsWrap(){
+  const keys = new Set(S.scan.selected), have = new Set([...keys, ...kitchenKeys()]);
+  const list = suggestions(have, keys, {}, {}).slice(0, 12);
+  return `<div class="navbar inline"><div class="navrow"><button class="navbtn back" onclick="App.scanBack()">${ic('back')}<span>Snap</span></button><div class="ttl">Recipe ideas</div><div class="navright"><button class="navbtn bold" onclick="App.closeSheet()">Done</button></div></div></div>
+    <div class="scroll" style="padding-top:12px">${section(list.map(s => sugRow(s).replace(`App.push('recipe','${s.r.id}')`, `App.scanOpenRecipe('${s.r.id}')`)).join(''), '', '', 76)}</div>`;
+}
+function wireScroll(sc){
+  const nb = sc.parentElement.querySelector('.navbar');
+  const f = () => nb.classList.toggle('scrolled', sc.scrollTop > (nb.classList.contains('inline') ? 4 : 40));
+  sc.addEventListener('scroll', f, {passive:true}); f();
+}
+let openSwipe = null;
+function wireSwipes(){
+  document.querySelectorAll('#app .swipe').forEach(sw => {
+    const front = sw.querySelector('.front'), width = sw.querySelector('.acts').offsetWidth;
+    let x0 = null, y0 = 0, dx = 0, base = 0, horiz = null;
+    front.addEventListener('pointerdown', e => { x0 = e.clientX; y0 = e.clientY; dx = 0; horiz = null; base = sw.classList.contains('open') ? -width : 0; });
+    front.addEventListener('pointermove', e => {
+      if (x0 === null) return;
+      const mx = e.clientX - x0, my = e.clientY - y0;
+      if (horiz === null && (Math.abs(mx) > 6 || Math.abs(my) > 6)) { horiz = Math.abs(mx) > Math.abs(my); if (horiz) front.setPointerCapture(e.pointerId); }
+      if (!horiz) return;
+      dx = mx; front.classList.add('drag');
+      front.style.transform = `translateX(${Math.min(0, Math.max(-width - 30, base + dx))}px)`;
+    });
+    const end = () => {
+      if (x0 === null) return; front.classList.remove('drag');
+      if (horiz) { const open = base + dx < -width/2; setOpen(sw, open, width); sw.dataset.dragged = '1'; setTimeout(() => delete sw.dataset.dragged, 50); }
+      x0 = null;
+    };
+    front.addEventListener('pointerup', end); front.addEventListener('pointercancel', end);
+  });
+}
+function setOpen(sw, open, width){
+  const front = sw.querySelector('.front');
+  if (openSwipe && openSwipe !== sw) { openSwipe.classList.remove('open'); openSwipe.querySelector('.front').style.transform = ''; }
+  sw.classList.toggle('open', open); front.style.transform = open ? `translateX(${-width}px)` : '';
+  openSwipe = open ? sw : null;
+}
+
+// ---------- overlays ----------
+function alertBox(title, msg, buttons){
+  return `<div class="dim" style="z-index:105"></div><div class="alert" role="alertdialog"><div class="body"><h4>${title}</h4>${msg?`<p>${msg}</p>`:''}</div>
+    <div class="btns">${buttons.map(([t, fn, bold]) => `<button class="${bold?'bold':''}" onclick="${fn}">${t}</button>`).join('')}</div></div>`;
+}
+
+// ---------- actions ----------
+const App = window.App = {
+  tab(k){ if (S.tab === k && S.stacks[k].length) { S.stacks[k] = []; } S.tab = k; closeSwipe(); render(); },
+  push(type, id){ S.stacks[S.tab].push({type, id}); S.pushed = true; render(); },
+  pop(){ S.stacks[S.tab].pop(); render(); },
+  setSearch(v){ S.search = v; render(); },
+  setFilter(f){ S.filter = f; render(); },
+  tapRow(e, fn, id){
+    const sw = e.currentTarget.closest('.swipe');
+    if (sw && sw.dataset.dragged) return;
+    if (sw && sw.classList.contains('open')) { setOpen(sw, false, 0); return; }
+    if (openSwipe) { closeSwipe(); return; }
+    App[fn](id);
+  },
+  editItem(id){
+    const it = id && S.items.find(i => i.id === id);
+    S.sheet = {type:'item', anim:true, data: it ? {...it, touched:true} : {id:null, name:'', qty:'', loc:'fridge', exp:inDays(7).getTime(), touched:false}};
+    render(); if (!it) setTimeout(() => { const f = document.getElementById('fname'); f && f.focus(); }, 340);
+  },
+  itemName(v){ const d = S.sheet.data; d.name = v; if (!d.id && !d.touched) { d.loc = suggestedLoc(v); d.exp = suggestedExp(v, d.loc).getTime(); } render(); },
+  itemLoc(v){ S.sheet.data.loc = v; S.sheet.data.touched = true; },
+  itemExp(v){ if (v) { const [y,m,d] = v.split('-').map(Number); S.sheet.data.exp = new Date(y, m-1, d).getTime(); S.sheet.data.touched = true; } },
+  sheetSet(k, v){ S.sheet.data[k] = v; },
+  saveItem(){
+    const d = S.sheet.data, name = d.name.trim(); if (!name) return;
+    if (d.id) Object.assign(S.items.find(i => i.id === d.id), {name, qty:d.qty, loc:d.loc, exp:d.exp});
+    else S.items.push({id:uid(), name, qty:d.qty, loc:d.loc, exp:d.exp});
+    S.sheet = null; render();
+  },
+  removeItem(id, used){
+    if (used === true) S.used++; else if (used === false) S.tossed++;
+    S.items = S.items.filter(i => i.id !== id); if (S.sheet && S.sheet.type === 'item') S.sheet = null; openSwipe = null; render();
+  },
+  closeSheet(){ S.sheet = null; render(); },
+  loadSample(){ S.items = S.items.concat(sample()); S.groc = S.groc.concat(['Greek yogurt','Lemons','Tortillas'].map(n => ({id:uid(), name:n, done:false}))); render(); },
+  toggleGroc(id){ const g = S.groc.find(x => x.id === id); g.done = !g.done; render(); },
+  delGroc(id){ S.groc = S.groc.filter(g => g.id !== id); openSwipe = null; render(); },
+  addGroc(){ const el = document.getElementById('addg'), v = el.value.trim(); if (!v) return; S.groc.push({id:uid(), name:v, done:false}); render(); const n = document.getElementById('addg'); n.value = ''; n.focus(); },
+  stock(){
+    const cart = S.groc.filter(g => g.done);
+    cart.forEach(g => { const loc = suggestedLoc(g.name); S.items.push({id:uid(), name:g.name, qty:'', loc, exp:suggestedExp(g.name, loc).getTime()}); });
+    S.groc = S.groc.filter(g => !g.done);
+    App.alert('Kitchen updated', `${cart.length} item${cart.length===1?'':'s'} added. Tap any item in Kitchen to adjust its date.`);
+  },
+  shareList(){ const t = S.groc.filter(g => !g.done).map(g => '• ' + esc(g.name)).join('<br>'); App.alert('Share list', (t || 'Nothing left to buy.') + '<br><br><span style="opacity:.7">In the app, this opens the iOS share sheet.</span>'); },
+  pref(k){ S.prefs[k] = !S.prefs[k]; render(); },
+  addMissing(id){
+    const r = D.recipes.find(x => x.id === id), have = kitchenKeys();
+    const onList = new Set(S.groc.filter(g => !g.done).map(g => keyOf(g.name)));
+    const add = [...new Set(r.ing.map(i => i[0]).filter(k => !have.has(k) && !onList.has(k)))];
+    add.forEach(k => S.groc.push({id:uid(), name:displayName(k), done:false}));
+    App.alert('Shopping list updated', add.length ? `Added ${add.length} item${add.length===1?'':'s'}.` : 'Those items are already on your list.');
+  },
+  shareMine(id){ const m = S.mine.find(x => x.id === id); App.alert('Share recipe', `In the app, this opens the iOS share sheet to send “${esc(m.title)}” by message, email or AirDrop.`); },
+  shareRecipe(id){ const r = D.recipes.find(x => x.id === id); App.alert('Share recipe', `In the app, this opens the iOS share sheet to send “${esc(r.name)}” by message, email or AirDrop.`); },
+  cookedPrompt(id){
+    S.overlay = `<div class="dim" style="z-index:105" onclick="App.dismiss()"></div><div class="action"><div class="grp"><p>Nice! Update your kitchen?</p>
+      <button onclick="App.cooked('${id}',true)">Remove the ingredients I used</button><button onclick="App.cooked('${id}',false)">Just log that I cooked it</button></div>
+      <button class="cancel" onclick="App.dismiss()">Cancel</button></div>`;
+    render();
+  },
+  cooked(id, remove){
+    S.cooked[id] = (S.cooked[id]||0) + 1; S.overlay = null;
+    if (remove) {
+      const r = D.recipes.find(x => x.id === id); let n = 0;
+      new Set(r.ing.map(i => i[0])).forEach(k => {
+        const m = S.items.filter(i => keyOf(i.name) === k).sort((a,b) => a.exp - b.exp)[0];
+        if (m) { S.items = S.items.filter(i => i !== m); n++; }
+      });
+      S.used += n;
+    }
+    render();
+  },
+  newRecipe(){ S.sheet = {type:'recipe', anim:true, data:{title:'', ing:'', steps:''}}; render(); },
+  recTitle(v){ S.sheet.data.title = v; const b = document.getElementById('saveRec'); if (b) b.disabled = !v.trim(); },
+  saveRecipe(){ const d = S.sheet.data; S.mine.unshift({id:uid(), title:d.title.trim(), ing:d.ing, steps:d.steps}); S.sheet = null; render(); },
+  setRem(){ S.rem = !S.rem; render(); },
+  setDays(v){ S.days = +v; },
+  confirmDelete(){
+    S.overlay = `<div class="dim" style="z-index:105" onclick="App.dismiss()"></div><div class="action"><div class="grp"><p>Delete everything?<br><span style="font-weight:400">This removes your kitchen, shopping list, recipes and history from this device.</span></p>
+      <button class="danger" onclick="App.deleteAll()">Delete all data</button></div><button class="cancel" onclick="App.dismiss()">Cancel</button></div>`;
+    render();
+  },
+  deleteAll(){ Object.assign(S, {items:[], groc:[], cooked:{}, mine:[], used:0, tossed:0, overlay:null}); render(); },
+  alert(t, m){ S.overlay = alertBox(t, m, [['OK','App.dismiss()',true]]); render(); },
+  dismiss(){ S.overlay = null; render(); },
+  // scan
+  openScan(){ S.scan = {img:null, found:[], selected:[], busy:false, page:'main'}; S.sheet = {type:'scan', anim:true}; render(); },
+  photo(input){
+    const f = input.files && input.files[0]; if (!f) return;
+    const rd = new FileReader(); rd.onload = () => { S.scan.img = rd.result; S.scan.busy = true; render(); setTimeout(() => { S.scan.busy = false; render(); }, 900); }; rd.readAsDataURL(f);
+  },
+  samplePhoto(){
+    S.scan.img = 'sample'; S.scan.busy = true; render();
+    setTimeout(() => { ['egg','potato','onion','bell pepper','cheese'].forEach(k => { if (!S.scan.found.includes(k)) S.scan.found.push(k); if (!S.scan.selected.includes(k)) S.scan.selected.push(k); }); S.scan.busy = false; render(); }, 1100);
+  },
+  scanToggle(k){ const s = S.scan.selected; S.scan.selected = s.includes(k) ? s.filter(x => x !== k) : s.concat(k); render(); },
+  scanAdd(){ const el = document.getElementById('scanadd'), v = el.value.trim(); if (!v) return; const k = keyOf(v);
+    if (!S.scan.found.includes(k)) S.scan.found.push(k); if (!S.scan.selected.includes(k)) S.scan.selected.push(k); render(); },
+  scanRecipes(){ S.scan.page = 'results'; render(); },
+  scanBack(){ S.scan.page = 'main'; render(); },
+  scanOpenRecipe(id){ S.sheet = null; S.tab = 'cook'; S.stacks.cook = [{type:'recipe', id}]; S.pushed = true; render(); },
+  scanToKitchen(){
+    const have = kitchenKeys(), add = S.scan.selected.filter(k => !have.has(k));
+    add.forEach(k => { const n = displayName(k), loc = suggestedLoc(n); S.items.push({id:uid(), name:n, qty:'', loc, exp:suggestedExp(n, loc).getTime()}); });
+    App.alert('Kitchen updated', add.length ? `Added ${add.length} item${add.length===1?'':'s'} with suggested dates.` : 'Those are already in your kitchen.');
+  },
+  // onboarding
+  obNext(){ if (S.ob < 2) { S.ob++; render(); } else { S.overlay = alertBox('“LeftoverIQ” Would Like to Send You Notifications', 'Notifications may include alerts, sounds and icon badges. These can be configured in Settings.', [["Don’t Allow",'App.obDone()'],['Allow','App.obDone()',true]]); render(); } },
+  obDone(){ S.onboard = false; S.overlay = null; render(); },
+  reset(){ S = fresh(true); render(); },
+  theme(){ const r = document.documentElement, cur = r.getAttribute('data-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); r.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark'); }
+};
+function closeSwipe(){ if (openSwipe) { openSwipe.classList.remove('open'); openSwipe.querySelector('.front').style.transform = ''; openSwipe = null; } }
+
+// ---------- fit phone to window ----------
+function fit(){ const s = Math.min(1, (innerHeight - 40) / 868, (innerWidth - 40) / 414); document.getElementById('scaler').style.transform = innerWidth > 500 ? `scale(${s})` : ''; }
+addEventListener('resize', fit); fit();
+function tick(){ const d = new Date(); document.getElementById('clock').textContent = d.getHours() % 12 || 12; document.getElementById('clock').textContent += ':' + String(d.getMinutes()).padStart(2, '0'); }
+tick(); setInterval(tick, 30000);
+render();
+})();
+</script>
+</body>
+</html>
