@@ -2,11 +2,11 @@
 
 SwiftUI + SwiftData app, iOS 17+, iPhone, no third-party dependencies, no backend.
 
-> **Not yet compiled.** This project was written without Xcode available. The Swift files pass a syntax parse and the project file parses, but nothing has been type-checked or built. Expect to fix a few compile errors on the first build. After that, run through the full test checklist below.
+> **Build status:** compiles cleanly (0 errors, 0 code warnings) with Xcode 26.6 for iOS Simulator (Debug) and generic iOS device (Release, unsigned). The repo's GitHub Actions workflow `.github/workflows/ios-build.yml` rebuilds it on every push. It has not been run interactively yet, so work through the test checklist below on a real iPhone.
 
 ## 1. Open and run
 
-1. Requirements: macOS with **Xcode 16 or newer** (the project uses Xcode 16's folder-synced groups, `objectVersion 77`).
+1. Requirements: macOS with **Xcode 16 or newer** (verified with Xcode 26.6) (the project uses Xcode 16's folder-synced groups, `objectVersion 77`).
 2. Double-click `LeftoverIQ.xcodeproj`.
 3. Select the **LeftoverIQ** target → **Signing & Capabilities**:
    - **Team**: choose your Apple Developer team.

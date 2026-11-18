@@ -42,4 +42,4 @@ The app is designed so these can be added later without starting over.
 3. **A public web page for the privacy policy and a support contact.** A free site works.
 4. **About an afternoon** to follow `README-DEVELOPER.md`, plus Apple's review time (often 1 to 3 days).
 
-> This code was written without access to a Mac, so it has not yet been compiled. A developer opening it in Xcode for the first time may need to fix a few small build errors before it runs. Test it on a real iPhone before submitting.
+> **Build status:** the app compiles with no errors in Xcode 26.6, for both the iPhone simulator and real iPhones (checked automatically on GitHub's Macs). It has not yet been tapped through by a person, so test it on a real iPhone before submitting.
