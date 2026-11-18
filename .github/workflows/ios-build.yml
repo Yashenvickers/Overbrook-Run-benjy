@@ -1,0 +1,56 @@
+name: iOS build (LeftoverIQ)
+
+on:
+  push:
+    paths:
+      - "leftoveriq-ios/**"
+      - ".github/workflows/ios-build.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: ios-build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Compile on macOS with Xcode
+    runs-on: macos-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: leftoveriq-ios
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Show Xcode version
+        run: xcodebuild -version
+
+      - name: Build for iPhone Simulator (Debug)
+        run: |
+          set +e
+          xcodebuild -project LeftoverIQ.xcodeproj -scheme LeftoverIQ -configuration Debug \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO build > build-sim.log 2>&1
+          status=$?
+          echo "---- errors ----"; grep -E "error:" build-sim.log | sort -u | head -100
+          echo "---- warnings ----"; grep -E "warning:" build-sim.log | sort -u | head -50
+          tail -5 build-sim.log
+          exit $status
+
+      - name: Build for iPhone device (Release, unsigned)
+        run: |
+          set +e
+          xcodebuild -project LeftoverIQ.xcodeproj -scheme LeftoverIQ -configuration Release \
+            -destination 'generic/platform=iOS' \
+            CODE_SIGNING_ALLOWED=NO build > build-device.log 2>&1
+          status=$?
+          echo "---- errors ----"; grep -E "error:" build-device.log | sort -u | head -100
+          tail -5 build-device.log
+          exit $status
+
+      - name: Upload build logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs
+          path: leftoveriq-ios/build-*.log
